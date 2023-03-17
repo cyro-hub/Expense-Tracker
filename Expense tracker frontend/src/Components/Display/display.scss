@@ -1,0 +1,55 @@
+@import '../../Styles//var.scss';
+
+.display{
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    padding-inline:0.25em ;
+    color: $secondary-text; 
+    transition: 1s ease-in-out;
+    
+    .display-card{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        flex-direction: row;
+        padding-bottom:1em;
+        gap: 1em;
+        
+        .card{
+            display: flex;
+            flex-direction: column;
+            background: #ffffff05;
+            border-radius: 10px;            
+            font-family: Ravi Prakash;
+            align-items: center;
+            justify-content: center;
+            padding: .5em;
+            flex: .5;
+             input{
+                width: 100%;
+                padding: 5px;
+                border: none;
+                background-color: transparent;
+                outline: none;
+                color: $secondary-text;
+                font-size: .55em;
+                margin: .7em 0;
+                letter-spacing: 1.2px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    // .display-card{
+    //     flex-direction: column;
+    //     .card{
+    //         // width: 100vw !important;
+    //         // flex: 1;
+    //     }
+    // }
+}

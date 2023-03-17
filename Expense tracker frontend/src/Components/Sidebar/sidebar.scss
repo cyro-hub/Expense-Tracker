@@ -1,0 +1,64 @@
+@import '../../Styles/var.scss';
+
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    // border-right: 0.5px solid rgba(46, 46, 46, 0.8);
+    padding-inline: 3px;
+    height: 100vh;
+    position: sticky;
+    width: max-content;
+    gap: 0.5em;
+
+    .user-info{
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 5px;
+        width: 100%;
+        padding: 2px;
+        margin-bottom: 1em;
+        gap: .5em;
+
+        .info{
+            // flex: .9;
+            text-align: center;
+            h6{
+                font-weight: lighter;
+            }
+            p{
+                font-weight: lighter;
+                font-size: 0.5em;
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: $tertiary-text;
+            }
+        }
+    }
+    .home{
+        text-decoration: none;
+        color: $tertiary-text;
+        display: flex;
+        font-size:.8em;
+        gap: 0.4em;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: lighter;
+        padding-inline:5px ;
+        svg{
+            // margin-inline: auto;
+            margin-bottom: 4px;
+            // justify-self: flex-start;
+        }
+    }
+    .home:hover{
+            color: $accent-color-secondary;
+    }
+}
+
+.small{
+    width: 30px;
+}

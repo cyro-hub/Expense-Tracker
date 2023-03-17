@@ -1,0 +1,124 @@
+@import '../../Styles/var.scss';
+
+form{
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+        border-radius: 10px;            
+        font-family: Ravi Prakash;
+        margin-top: 4em;
+        margin-bottom: 30vh;
+        align-items: center;
+        justify-content: center;
+        min-width: 25em;
+        max-width: 30em;
+        padding: 1em;
+
+        .input{
+            position: relative;
+            width: 90%;
+            text-align: center;
+            input,select{
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-bottom: 0.25px solid $tertiary-text;
+                background-color: transparent;
+                outline: none;
+                color: $primary-text;
+                font-size: 1em;
+                margin: .7em 0;
+                font-family: Ravi Prakash;
+            }
+            input,select:valid ~ span, 
+            input,select:focus ~ span{
+                top: -1em;
+                font-size: 1em;
+                padding-inline: 0.6em;
+                color: $accent-color-secondary;
+            }
+            select>option{
+                all: unset;
+                background: $secondary-text;
+                color: $primary-background;
+                font-size: 1.125em;
+                font-weight: bold;
+                font-family: Ravi Prakash;
+            }
+            span{
+                transition: 0.5s ease-in-out;
+                position: absolute;
+                left: 0.2em;
+                top: .4em;
+                padding: 10px;
+                pointer-events: none;
+                font-size: 1em;
+                color: $tertiary-text;
+            }
+        }
+        
+
+        .controls{
+            width: 100%;
+            display: flex;
+            padding-inline: 2.5em;
+            justify-content: space-between;
+            margin-top: 2em;
+
+            a{
+                text-decoration: none;
+                color: $secondary-text;
+                font-size: 1.13em;
+            }
+            a:hover{
+                color: $tertiary-text;
+            }
+            .active{
+                color: $accent-color;
+                border: 0.5px solid $accent-color;
+                border-radius: 5px;
+                padding-inline: 15px;
+                transition: 0.25s ease-in-out;
+            }
+            .active:hover{
+                color: $accent-color-secondary;
+                border: 0.25px solid $accent-color-secondary;
+            }
+            .danger{
+                color: $warning !important;
+                border: 0.5px solid $warning;
+                border-radius: 5px;
+                padding-inline: 15px;
+                transition: 0.25s ease-in-out;
+            }
+            .danger:hover{
+                color: $warning-secondary !important;
+                border: 0.25px solid $warning-secondary;
+            }
+            //for edit button in form edit in modal functions
+            .actives{
+                color: $accent-color !important;
+                border: 0.5px solid $accent-color;
+            }
+            .actives:hover{
+                color: $accent-color-secondary !important;
+                border: 0.25px solid $accent-color-secondary ;
+            }
+        }
+    }
+
+.date-picker{
+    width: 90%;
+    margin-top: 5px !important;
+    outline: none !important;
+    input,button{
+        color:white;
+    }
+    input,button,label{
+        font-family: Ravi Prakash;
+    }
+    label{  
+        color: $accent-color;
+        font-size: 1.1em;
+    }
+}

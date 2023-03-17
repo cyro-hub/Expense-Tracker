@@ -1,0 +1,22 @@
+@import "../../Styles//var.scss";
+
+.nav{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    a{
+        text-decoration: none;
+        color: white;
+        cursor: default;
+    }
+    a:hover{
+        color: $tertiary-text;
+    }
+
+    .nav-links{
+        a{
+            padding-inline-start: 1em;
+        }
+    }
+}

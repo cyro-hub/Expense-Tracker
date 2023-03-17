@@ -1,0 +1,87 @@
+@import '../../Styles/var.scss';
+
+// .categories{
+//     width: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     font-family: Ravi Prakash;
+// }
+
+.account-form{
+    h2{
+        width: 100%;
+        text-align: center;
+    }
+
+    .category-list{
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        max-height:400px;
+        padding: 1em auto;
+        max-height: 22em;
+        width: 100%;
+
+        .category{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .25em;
+            font-weight: lighter;
+            letter-spacing: 1px;
+            border-bottom: 0.005px solid $accent-color-secondary;
+            h4{
+                max-width: 225px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .actions{
+                max-width: 5em;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                // margin-inline: 0.25em;
+                svg{
+                    margin-inline: 0.5em;
+                }
+                svg:first-child{
+                    color: $accent-color;
+                }
+                svg:first-child:hover{
+                    color: $accent-color-secondary;
+                }
+                svg:last-child{
+                    color: rgb(255, 38, 0);
+                }
+                svg:last-child:hover{
+                    color: rgba(255, 38, 0, 0.5);
+                }
+            }
+        }
+    }
+
+    .active{
+        width: max-content;
+        margin: 0.1em auto;
+        margin-top: 1em;
+        text-decoration: none;
+    }
+}
+
+.loading{
+    height: 2em;
+    width: 98%;
+    margin: 5px;
+    border-radius: 5px;
+    animation: loading 2s infinite;
+    transition: ease-in-out;
+}
+ 
+@keyframes loading {
+  0% {background-color:rgba(255, 255, 255, 0.25);}
+  25% {background-color: rgba(255, 255, 255, 0.5);}
+  50% {background-color: rgba(255, 255, 255, 0.7);}
+  100% {background-color: rgba(255, 255, 255, 0.25);}
+}

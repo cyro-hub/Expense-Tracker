@@ -1,0 +1,205 @@
+@import "../../Styles//var.scss";
+
+.welcome{
+    width: 100%;
+    height: 95vh;
+    position: relative;
+
+    .welcome-video{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 1em solid $primary-background;
+    }
+    .welcome-cover{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 10;
+        top: 0;   
+        display: flex;
+        flex-direction: column;   
+        background-image: radial-gradient(#0000, $secondary-background,$primary-background,$primary-background);
+
+        .welcome-message{
+            align-self: flex-end;
+            justify-self: center;
+            margin-top: 20vh;
+            margin-right: 1.5rem;
+            text-align: center;
+            h1{
+                text-shadow: 2px 2px 12px $primary-text;
+                font-size: 4em;
+                color: $primary-background;
+                font-family: Ravi Prakash;
+            }
+            h3{
+                width: 100%;
+                font-size: 2em;
+                text-shadow: 4px 4px 12px $primary-text;
+                color:$primary-background;
+                margin: -1.1em;
+            }
+        }
+        .start{
+            text-decoration: none;
+            color: $primary-text;
+            padding-inline: 1em;
+            font-size: 1.25em;
+            border-radius: 5px;
+            box-shadow: inset 0 0 0.5em 0 $primary-text,0 0 0.5em 0 $primary-text;
+            border: 0.5px solid $primary-text;
+            transition: 1s ease-in-out;
+            justify-self: baseline;
+            align-self: baseline;
+            bottom: 2em;
+            margin: 0 auto;
+            margin-top: 30vh;
+        }
+        .start:hover{
+        box-shadow: inset 0 0 0.5em 0 $primary-text;
+        }
+    }
+}
+.container-services{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    // margin-bottom: 7em;
+    h2{
+        text-align: center;
+        width: 100;
+        font-family: Ravi Prakash;
+        font-size: 1.75em;
+    }
+    .services{
+        margin: 1em auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+    
+        .service{
+            max-width: 18em;
+            height: max-content;
+            padding: 1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur( 20px );
+            -webkit-backdrop-filter: blur( 1.25em );
+            border-radius: 10px;            
+            font-family: julee;
+
+            svg{
+                color:$accent-color;
+                margin: .5em;
+            }
+            p{
+                color: $secondary-text;
+                font-weight: 100;
+                font-size: 0.9em;
+                text-align: center;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+// .welcome{
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: right;
+//     align-items: flex-end;
+//     transform-style: preserve-3d;
+//     perspective-origin: 50% calc(50% - 2em);
+//     position: relative;
+
+//     .welcome-video{
+//         width: 60%;
+//         height: 70vh;
+//         transform: rotateX(60deg);
+//         position: absolute;
+//         object-fit: cover;
+//         box-shadow: inset 3em 3em 3em 3em $primary-background,
+//          3em 3em 3em 3em $primary-background;
+//          border: 1em solid $primary-background;
+//     }
+
+//     .welcome-cover{
+//         width: 60%;
+//         height: 70vh;
+//         z-index: 50;
+//         transform: rotateX(60deg);
+//         background-image: radial-gradient(#0000, $secondary-background,$primary-background,$primary-background);
+//         position: absolute;
+//         border: $primary-background solid 10px;
+//         box-shadow: 3em 3em 3em 3em $primary-background;
+//     }
+
+//     @media screen and (max-width: $medium) {
+//     .welcome-video,.caption,.welcome-cover{
+//         width: 100%;
+//     }
+//   }
+// }
+// .start-container{
+//     display: flex;
+//     flex-direction: column;
+//     width: 100% !important;
+//     height: 85vh !important;
+//     position: relative;
+//     align-items: center;
+//     margin-bottom: 4rem;
+
+//     .start{
+//         text-decoration: none;
+//         color: $accent-color;
+//         padding-inline: 1em;
+//         font-size: 1.25em;
+//         border-radius: 5px;
+//         box-shadow: inset 0 0 0.5em 0 $accent-color,0 0 0.5em 0 $accent-color;
+//         border: 0.5px solid $accent-color;
+//         transition: 1s ease-in-out;
+//         justify-self: baseline;
+//         bottom: 2em;
+//     }
+//     .start:hover{
+//      box-shadow: inset 0 0 0.5em 0 $accent-color;
+//     }
+//     .welcome-message{
+//         align-self: flex-end;
+//         justify-content: center;
+//         margin-top: 13em;
+//         margin-right: 5em;
+//         text-align: center;
+//         h1{
+//             text-shadow: 2px 2px 12px $primary-text;
+//             font-size: 4em;
+//             color: $primary-background;
+//             font-family: Ravi Prakash;
+//         }
+//         h3{
+//             width: 100%;
+//             font-size: 2em;
+//             text-shadow: 4px 4px 12px $primary-text;
+//             color:$primary-background;
+//             margin: -1.1em;
+//         }
+//     }
+//     @media screen and (max-width: $small) {
+//         .welcome-message{
+//             align-self: center;
+//             display: flex;
+//             flex-direction: column;
+//             justify-content: center;
+//             margin: auto;
+//         }
+//     }
+// }

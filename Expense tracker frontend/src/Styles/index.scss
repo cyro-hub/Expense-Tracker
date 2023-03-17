@@ -1,0 +1,79 @@
+@import "./var.scss";
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body{
+  background: $primary-background;
+  color: $primary-text;
+  width: 100vw;
+  height: 100%;
+  cursor: default;
+  font-family: Ravi Prakash;
+}
+
+#root{
+  width: 100%;
+  max-width: 1250px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: auto;
+  padding-top: 1em;
+
+  .container{
+    padding-inline:1em;
+    width: 100%;
+  }
+}
+
+.warning,.success{
+  width: 100%;
+  text-align: center;
+  color: $warning;
+}
+.success{
+  color: $accent-color;
+}
+
+.active{
+  color: $accent-color;
+  border: 0.5px solid $accent-color;
+  border-radius: 5px;
+  padding-inline: 15px;
+  transition: 0.5s ease-in-out;
+}
+.active:hover{
+  color: $accent-color-secondary;
+  border: 0.25px solid $accent-color-secondary;
+}
+
+.spinning{
+  display: flex;
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.danger{
+  color: $warning;
+  margin-inline: 5px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

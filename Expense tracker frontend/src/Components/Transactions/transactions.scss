@@ -1,0 +1,55 @@
+@import '../../Styles/var.scss';
+
+.Transactions-list{
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    max-height:400px;
+    padding: 1em auto;
+    max-height: 22em;
+    width: 100%;
+
+    .transaction{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 0.005px solid $accent-color-secondary;
+        
+        .category-shorten{
+            overflow: hidden;
+            white-space: nowrap;
+            width: 120px;
+            text-overflow: ellipsis;
+            color:  $tertiary-text;
+        }
+        .moment{
+            font-size: 0.6em !important;
+            font-style: italic;
+            // font-family: cursive;
+            color: $tertiary-text;
+        }
+
+        .actions{
+                max-width: 4em;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                svg{
+                    margin-inline: 0.25em;
+                }
+                svg:first-child{
+                    color: $accent-color;
+                }
+                svg:first-child:hover{
+                    color: $accent-color-secondary;
+                }
+                svg:last-child{
+                    color: rgb(255, 38, 0);
+                }
+                svg:last-child:hover{
+                    color: rgba(255, 38, 0, 0.5);
+                }
+            }
+    }
+
+}

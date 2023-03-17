@@ -1,0 +1,17 @@
+.dashboard{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    height: 97vh;
+    width: 100vw;
+    overflow: hidden;
+
+    .sidebar{
+        flex: .1;
+    }
+    .display{
+        flex: .9;
+        width: 100%;
+        
+    }
+}
