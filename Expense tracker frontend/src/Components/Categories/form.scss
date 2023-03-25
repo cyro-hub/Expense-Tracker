@@ -55,7 +55,11 @@ form{
                 font-size: 1em;
                 color: $tertiary-text;
             }
-        }
+            .select-no-border{
+                border-bottom: 0.25px solid rgb(7, 7, 7);
+                border-radius: 5px;
+            }
+     }
         
 
         .controls{

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/*using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,7 +21,7 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult> GetAll(Guid UserId)
     {
         
-        var result = await _unitOfWork.Categories.GetAll(new GetRequest()
+        var result = await _unitOfWork.Categories.GetIncome(new GetRequest()
         {
             UserId = UserId
         });
@@ -73,3 +73,4 @@ public class CategoryController : ControllerBase
         return BadRequest("");
     }
 }
+*/

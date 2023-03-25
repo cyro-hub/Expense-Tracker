@@ -22,6 +22,11 @@ export const loginUser = async (user) => {
     return response.data;
 }
 
+export const getUserBalance = async (id,headers) => {
+    const response = await BaseEndPoint.get(`?UserId=${id}`, headers);
+    return response.data;
+}
+
 export const refreshToken = async () => {
     const response = await BaseEndPoint.get(RefreshToken,{
         withCredentials: true,

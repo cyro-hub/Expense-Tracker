@@ -47,7 +47,8 @@ function Form({ data }) {
     const [category, setCategory] = useState({
       Name: data.name,
       UserId: data.userId,
-      Id:data.id
+      Id: data.id,
+      categoryType:""
     })
     const [openForm,setOpenForm]=useState(false)
     const [warning, setWarning] = useState('')
@@ -116,6 +117,14 @@ function Form({ data }) {
                   <input type="text" required autoComplete='off' value={category.Name} name='Name' onChange={handleInput}/>
                   <span>Category</span>
               </motion.div>
+              <motion.div className="input" variants={item}>
+                  <select name="categoryType" onChange={handleInput}>
+                    <option value="">Select a Category Type</option>
+                    <option value="income">Income</option>
+                    <option value="outcome">Outcome</option>
+                  </select>
+                  <span>Category Type</span>
+                </motion.div>
               <motion.div className="controls" variants={item}>
                 <Link to='#' className='danger actives' onClick={!isLoading && handleSubmit}>
                   {isLoading ? <BeatLoader loading={true} size={8} color="green"/> : "Edit"}

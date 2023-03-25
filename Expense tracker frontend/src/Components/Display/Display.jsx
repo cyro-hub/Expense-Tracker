@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState,useRef ,useEffect} from 'react';
 import './display.scss';
 import { motion } from "framer-motion";
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Example from './Components/IncomeChart'
+import { useSelector } from 'react-redux';
+import useSWR from 'swr';
+import { getUserBalance } from '../../Api/User';
 
 
 const item = {
@@ -28,6 +27,23 @@ const container = {
 };
 
 function Display() {
+
+  let headers = useSelector(state => state.UserState.Headers);
+
+  const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
+  
+  const { data: balance } = useSWR("user_balance", () => getUserBalance(userId, headers), { refreshInterval: 4000 })
+  
+  const formatNumber=(num) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(2) + 'M';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(2) + 'K';
+    } else {
+      return num;
+    }
+  }
+
   return (
     <div className='display'>
       <div className="display-card">
@@ -37,38 +53,31 @@ function Display() {
           animate="visible"
           className='card'>
             <motion.h3 variants={item}>Balance</motion.h3>
-            <motion.h1 variants={item}>400usd</motion.h1>
-          </motion.div>
+            <motion.h1 variants={item}>${formatNumber(balance)}</motion.h1>
+        </motion.div>
         <motion.div
           variants={container}
           initial="hidden"
           animate="visible"
           className='card'>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="From"
-                    // value={transaction.createdAt}
-                    maxDate={new Date()}
-                    // onChange={handleChange}
-                    className='date-picker'
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="To"
-                    // value={transaction.createdAt}
-                    maxDate={new Date()}
-                    // onChange={handleChange}
-                    className='date-picker'
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
-          </motion.div>
+            <motion.h3 variants={item}>Balance</motion.h3>
+            <motion.h1 variants={item}>${formatNumber(balance)}</motion.h1>
+        </motion.div>
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          className='card'>
+            <motion.h3 variants={item}>Balance</motion.h3>
+            <motion.h1 variants={item}>${formatNumber(balance)}</motion.h1>
+        </motion.div>
       </div>
-      <Example/>
+      <div className="chart" >
+        <Example/>
+      </div>
     </div>
   )
 }
 
 export default Display
+

@@ -15,35 +15,7 @@ public class OutcomeRepository : Repository<Outcome>
         _logger = logger;
         _mapper = mapper;
     }
-
-    public async Task<Responses<List<TransactionResponse>>> GetOutcomePerMOnth(Guid UserId)
-    {
-        try
-        {
-            var result = await _context.Incomes.FromSql($"SELECT CategoryId, UserId, Currency, Id, Amount, monthname(CreatedAt) as Month, CreatedAt FROM outcomes where UserId={UserId}").Select(income => new TransactionResponse() { Amount = income.Amount, FullMonth = income.FullMonth }).ToListAsync();
-
-
-            return (new Responses<List<TransactionResponse>>
-            {
-                StatusCode = 200,
-                StatusMessage = "successful Operation",
-                Data = result,
-                IsSuccess = true
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting the lastest income record", typeof(Repository<Outcome>));
-
-            return new Responses<List<TransactionResponse>>()
-            {
-                StatusCode = 500,
-                IsSuccess = false,
-                StatusMessage = "Failed to get outcome per month"
-            };
-        }
-    }
-    public override async Task<Responses<List<Outcome>>> GetAll(GetRequest request)
+    /*public override async Task<Responses<List<Outcome>>> GetIncome(GetRequest request)
     {
         try
         {
@@ -87,6 +59,7 @@ public class OutcomeRepository : Repository<Outcome>
         {
             Outcome outcome = _mapper.Map<Outcome>(request);
             outcome.Id = Guid.NewGuid();
+            outcome.FullMonth = request.CreatedAt.Month.ToString();
 
             if (outcome.Amount <= 0)
             {
@@ -203,6 +176,7 @@ public class OutcomeRepository : Repository<Outcome>
             outcome.CreatedAt = request.CreatedAt;
             outcome.CategoryId = request.CategoryId;
             outcome.Currency = request.Currency;
+            outcome.FullMonth = request.CreatedAt.Month.ToString();
 
             await _context.SaveChangesAsync();
 
@@ -227,5 +201,5 @@ public class OutcomeRepository : Repository<Outcome>
                 StatusMessage = "Failed Operation"
             };
         }
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/*using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Expense_Tracker.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-/*[Authorize]*/
+[Authorize]
 public class OutcomesController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -16,12 +16,12 @@ public class OutcomesController : ControllerBase
         _unitOfWork = unitOfWork;
     }
 
-    [HttpGet("All")]
-    public async Task<ActionResult> GetAllRecordsWithQuery(int CurrentPage, Guid UserId, string QueryString)
+    [HttpGet]
+    public async Task<ActionResult> Get(int CurrentPage, Guid UserId, string QueryString)
     {
         if (CurrentPage != null || CurrentPage >= 0)
         {
-            var result = await _unitOfWork.Outcomes.GetAll(new GetRequest()
+            var result = await _unitOfWork.Outcomes.GetIncome(new GetRequest()
             {
                 CurrentPage = CurrentPage, UserId = UserId, QueryString = QueryString
             });
@@ -31,18 +31,6 @@ public class OutcomesController : ControllerBase
         return BadRequest();
     }
 
-    [HttpGet]
-    public async Task<ActionResult> GetOutcomePerMOnth(Guid UserId)
-    {
-        if (UserId != null)
-        {
-            var result = await _unitOfWork.Outcomes.GetOutcomePerMOnth(UserId);
-            return Ok(result);
-        }
-        return BadRequest();
-    }
-
-    // GET api/<IncomesController>/5
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(Guid id)
     {
@@ -54,7 +42,6 @@ public class OutcomesController : ControllerBase
         return BadRequest(string.Empty);
     }
 
-    // POST api/<IncomesController>
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] OutcomeDTO request)
     {
@@ -70,7 +57,6 @@ public class OutcomesController : ControllerBase
         return BadRequest(string.Empty);
     }
 
-    // PUT api/<IncomesController>/5
     [HttpPut]
     public async Task<ActionResult> Put([FromBody] OutcomeRequestDTO request)
     {
@@ -87,7 +73,6 @@ public class OutcomesController : ControllerBase
         return BadRequest(string.Empty);
     }
 
-    // DELETE api/<IncomesController>/5
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
@@ -103,3 +88,4 @@ public class OutcomesController : ControllerBase
         return BadRequest(string.Empty);
     }
 }
+*/

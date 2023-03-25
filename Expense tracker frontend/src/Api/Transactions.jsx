@@ -7,7 +7,7 @@ export const BaseEndPoint = axios.create({
 export const Outcomes = "Outcomes"
 
 export const getOutcome = async (currentPage, userId, headers) => {
-    const url = Outcomes + "/All?CurrentPage=" + currentPage + "&UserId=" + userId + "&QueryString=''";
+    const url = Outcomes + "?CurrentPage=" + currentPage + "&UserId=" + userId + "&QueryString=''";
     
     const response = await BaseEndPoint.get(url, headers)
     return response.data;

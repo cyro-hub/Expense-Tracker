@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
@@ -7,7 +7,7 @@ namespace Expense_Tracker.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-/*[Authorize]*/
+[Authorize]
 public class IncomesController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -19,12 +19,12 @@ public class IncomesController : ControllerBase
         this.context = context;
     }
    
-    [HttpGet("All")]
-    public async Task<ActionResult> GetAllRecordsWithQuery(int CurrentPage,Guid UserId, string QueryString)
+    [HttpGet]
+    public async Task<ActionResult> Get(int CurrentPage,Guid UserId, string QueryString)
     {
         if (CurrentPage != null || CurrentPage >= 0)
         {
-            var result = await _unitOfWork.Incomes.GetAll(new GetRequest()
+            var result = await _unitOfWork.Incomes.GetIncome(new GetRequest()
             {
                 CurrentPage = CurrentPage,
                 UserId = UserId,
@@ -35,20 +35,6 @@ public class IncomesController : ControllerBase
         }
         return BadRequest();
     }
-
-    [HttpGet]
-    public async Task<ActionResult> GetIncomePerMonth(Guid UserId,DateOnly from,DateOnly to)
-    {
-        if (UserId != null)
-        {
-            var result = await _unitOfWork.Incomes.GetIncomePerMOnth(UserId, from, to);
-
-            return Ok(result); 
-        }
-        return BadRequest();
-    }
-
-
     [HttpGet("{id}")]
     public async Task<ActionResult> Get(Guid id)
     {
@@ -60,7 +46,6 @@ public class IncomesController : ControllerBase
         return BadRequest(string.Empty);
     }
 
-    // POST api/<IncomesController>
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] IncomeDTO request)
     {
@@ -76,7 +61,6 @@ public class IncomesController : ControllerBase
         return BadRequest(request);
     }
 
-    // PUT api/<IncomesController>/5
     [HttpPut]
     public async Task<ActionResult> Put([FromBody] IncomeRequestDTO request)
     {
@@ -93,7 +77,6 @@ public class IncomesController : ControllerBase
         return BadRequest("inappropriate object");
     }
 
-    // DELETE api/<IncomesController>/5
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
@@ -110,3 +93,4 @@ public class IncomesController : ControllerBase
         return BadRequest(string.Empty);
     }
 }
+*/

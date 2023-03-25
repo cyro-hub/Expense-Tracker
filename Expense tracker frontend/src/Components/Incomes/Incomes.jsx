@@ -59,7 +59,7 @@ function Incomes({isOpen, isOpenFunction}) {
 
     const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
 
-    const { data } = useSWR("incomes", ()=>getIncomes(currentPage, userId, headers))
+    const { data } = useSWR("incomes", ()=>getIncomes(currentPage, userId, headers), { refreshInterval: 4000 })
 
     // console.log(data)
     return (<>

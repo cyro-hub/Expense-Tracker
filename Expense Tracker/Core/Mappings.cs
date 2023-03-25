@@ -14,5 +14,7 @@ public class Mappings:Profile
         CreateMap<OutcomeDTO, Outcome>();
         CreateMap<Category, CategoryDTO>();
         CreateMap<CategoryDTO, Category>();
+        CreateMap<Transaction, TransactionDTO>();
+        CreateMap<TransactionDTO, Transaction>();
     }
 }

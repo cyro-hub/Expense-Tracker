@@ -3,15 +3,14 @@
     flex-direction: row;
     position: relative;
     height: 97vh;
-    width: 100vw;
+    width: 90vw;
     overflow: hidden;
+    margin:0 auto;
 
     .sidebar{
         flex: .1;
     }
     .display{
-        flex: .9;
-        width: 100%;
-        
+        flex: .9 !important;
     }
 }

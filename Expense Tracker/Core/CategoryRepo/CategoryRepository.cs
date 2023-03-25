@@ -16,7 +16,7 @@ public class CategoryRepository : Repository<Category>
         _mapper = mapper;
     }
 
-    public override async Task<Responses<List<Category>>> GetAll(GetRequest request)
+    /*public override async Task<Responses<List<Category>>> GetIncome(GetRequest request)
     {
         try
         {
@@ -48,7 +48,7 @@ public class CategoryRepository : Repository<Category>
 
         try
         {
-            Category category = await _context.Categories.Where(category => category.Name == request.Name).FirstOrDefaultAsync();
+            Category category = await _context.Categories.Where(category => category.UserId == request.UserId && category.Name.ToLower().Equals(request.Name.ToLower())).FirstOrDefaultAsync();
 
             if (category is not null)
             {
@@ -117,5 +117,5 @@ public class CategoryRepository : Repository<Category>
                 StatusMessage = "Failed Operation"
             };
         }
-    }
+    }*/
 }

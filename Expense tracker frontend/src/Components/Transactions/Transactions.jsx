@@ -59,7 +59,7 @@ function Transactions({isOpen, isOpenFunction}) {
 
     const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
 
-    const { data } = useSWR("Transactions", ()=>getOutcome(currentPage, userId, headers))
+    const { data } = useSWR("Transactions", ()=>getOutcome(currentPage, userId, headers), { refreshInterval: 4000 })
 
     return (<>
         <Modal

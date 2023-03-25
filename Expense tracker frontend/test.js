@@ -27,3 +27,20 @@ for (let i = 0; i < arr.length; i++){
 }
 
 console.log(arr1)
+
+
+const obj1 = [{
+    fullMonth: 'january',
+    inAmount:600
+},{
+    fullMonth :'Febuary',
+    inAmount:600
+    }]
+
+const obj2 = [{
+    fullMonth: 'january',
+    outAmount:600
+},{
+    fullMonth :'Febuary',
+    outAmount:600
+}]

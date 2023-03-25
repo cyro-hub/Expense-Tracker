@@ -167,7 +167,7 @@ function Form({ data }) {
                 <select name="categoryId" onChange={handleInput}>
                   <option value="">select a category</option>
                   {
-                    categories?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
+                    categories?.filter(category=>category.categoryType == "income")?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
                   }                  
                 </select>
                 <span>Category</span>

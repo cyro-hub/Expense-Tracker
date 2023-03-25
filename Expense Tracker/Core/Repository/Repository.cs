@@ -14,7 +14,7 @@ public class Repository<T> where T : class
         this.logger = logger;
     }
 
-    public virtual async Task<Responses<List<T>>> GetAll(GetRequest request)
+    public virtual async Task<Responses<List<T>>> GetIncome(GetRequest request)
     {
         try
         {

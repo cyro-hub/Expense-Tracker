@@ -1,4 +1,4 @@
-﻿using Expense_Tracker.Core.Configuration;
+﻿/*using Expense_Tracker.Core.Configuration;
 using Expense_Tracker.Models;
 using Expense_Tracker.Models.UserModel;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +16,14 @@ public class UsersController : ControllerBase
     public UsersController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
+    }
+    [HttpGet]
+    [Authorize]
+    public async Task<ActionResult> GetUserBalance(Guid UserId)
+    {
+        var result = await _unitOfWork.Users.GetBalance(UserId);
+
+        return Ok(result);
     }
 
     [HttpPost("register")]
@@ -107,3 +115,4 @@ public class UsersController : ControllerBase
         return refreshToken;
     }
 }
+*/

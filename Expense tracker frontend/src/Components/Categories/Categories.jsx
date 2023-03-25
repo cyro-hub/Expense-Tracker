@@ -34,7 +34,7 @@ function Categories({ isOpen, isOpenFunction }) {
 
   let id = useSelector(state => state.UserState.User?.userInfo?.id)
 
-  const { data } = useSWR("categories", () => getCategories(id, headers), { refreshInterval: 12000 })
+  const { data } = useSWR("categories", () => getCategories(id, headers), { refreshInterval: 4000 })
   
   return (
     <>

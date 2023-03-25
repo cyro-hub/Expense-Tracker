@@ -3,6 +3,7 @@ import './sidebar.scss'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { BiCategory } from 'react-icons/bi'
 import { AiOutlineDownload,AiOutlineTransaction,AiTwotoneSetting,AiOutlineLogout } from 'react-icons/ai'
+import { RiFilter2Fill } from 'react-icons/ri'
 import { GoHome } from 'react-icons/go'
 import { Link, useNavigate } from 'react-router-dom'
 import Categories from '../Categories/Categories'
@@ -11,12 +12,12 @@ import { useSelector } from 'react-redux'
 import Transactions from '../Transactions/Transactions'
 import * as reduxFunctions from '../../StateManager/Functions/User'
 import { userLogout } from '../../Api/User'
-import Settings from '../Settings/Settings'
+import Filters from '../Filters/Filters'
 
 function Sidebar() {
     const [openCategories, setOpenCategories] = useState(false);
-    const [openSettings, setOpenSettings] = useState(false);
     const [openIncomes, setOpenIncomes] = useState(false);
+    const [openFilters, setOpenFilters]= useState(false)
     const [openTransactions, setOpenTransactions] = useState(false);
     const [size, setSize] = useState(window.innerWidth);
 
@@ -68,7 +69,10 @@ function Sidebar() {
           <Link to='#' onClick={ ()=>setOpenTransactions(!openTransactions)} className='home'><AiOutlineTransaction size={15} />
               {size > 500 && <p>Transactions</p>}
           </Link>
-          <Link to='#' onClick={()=>setOpenSettings(!openSettings)} className='home'><AiTwotoneSetting size={15} />
+          <Link to='#' onClick={()=>setOpenFilters(!openFilters)} className='home'><RiFilter2Fill size={15} />
+              {size > 500 && <p>Filters</p>}
+          </Link>
+          <Link to='/settings' className='home'><AiTwotoneSetting size={15} />
               {size > 500 && <p>Settings</p>}
           </Link>
           <Link to='#' onClick={logout} className='home'><AiOutlineLogout size={15} />
@@ -79,7 +83,7 @@ function Sidebar() {
                 isOpenFunction={setOpenCategories} />
             <Incomes isOpen={openIncomes} isOpenFunction={setOpenIncomes} />
             <Transactions isOpen={openTransactions} isOpenFunction={setOpenTransactions} />
-            <Settings isOpen={openSettings} isOpenFunction={setOpenSettings}/>
+            <Filters isOpen={openFilters} isOpenFunction={setOpenFilters}/>
     </>
   )
 }

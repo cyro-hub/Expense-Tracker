@@ -55,7 +55,7 @@ function Form({ }) {
     amount: '',
     rawAmount: '',
     categoryId: '',
-    createdAt: new Date(),
+    createdAt: moment(new Date()).format('YYYY-MM-DD'),
     currency: '',
     userId: useSelector(state => state.UserState.User?.userInfo.id)
   })
@@ -155,7 +155,7 @@ function Form({ }) {
                 <select name="categoryId" onChange={handleInput}>
                   <option value="">select a category</option>
                     {
-                      categories?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
+                      categories?.filter(category=>category.categoryType == "income")?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
                     }
                   </select>
                   <span>Category</span>

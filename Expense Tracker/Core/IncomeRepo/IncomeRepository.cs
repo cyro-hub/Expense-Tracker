@@ -19,57 +19,8 @@ public class IncomeRepository : Repository<Income>
         _logger = logger;
         _mapper = mapper;
     }
-
-    public async Task<Responses<List<TransactionResponse>>> GetIncomePerMOnth(Guid UserId,DateOnly from,DateOnly to)
-    {
-        try
-        {
-            /*var result = await _context.Incomes.FromSql($@"SELECT FullMonth, 
-                                                                  CreatedAt, 
-                                                                  SUM(Amount) AS Amount 
-                                                           FROM incomes 
-                                                           WHERE UserId={UserId} AND 
-                                                                 CreatedAt>={from} AND 
-                                                                 CreatedAt<={to} 
-                                                           GROUP BY FullMonth, 
-                                                                    CreatedAt,
-                                                           ").
-                                                           Select(income => new TransactionResponse()
-                                                           {
-                                                               Amount = income.Amount,
-                                                               FullMonth = income.FullMonth
-                                                           }).
-                                                           ToListAsync();*/
-
-            /* var result = await _context.Incomes.Where(c => c.CreatedAt >= from &&
-                                                       c.CreatedAt <= to &&
-                                                       c.UserId == UserId)
-                                                .GroupBy(c => c.CreatedAt)
-                                                .Select(c => new {c.Key, c.Sum(z => z.Amount)})
-                                                .TolistAsync();*/
-    /*        var result = await _context.Database.ExecuteSqlRaw($"CALL new").ToListAsync();*/
-
-            return (new Responses<List<TransactionResponse>>
-            {
-                StatusCode = 200,
-                StatusMessage = "successful Operation",
-               /* Data = result,*/
-                IsSuccess = true
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting the lastest income record", typeof(Repository<Income>));
-
-            return new Responses<List<TransactionResponse>>()
-            {
-                StatusCode = 500,
-                IsSuccess = false,
-                StatusMessage = "Failed Getting the income per month"
-            };
-        }
-    }
-    public override async Task<Responses<List<Income>>> GetAll(GetRequest request)
+/*
+    public override async Task<Responses<List<Income>>> GetIncome(GetRequest request)
     {
         try
         {
@@ -298,5 +249,5 @@ public class IncomeRepository : Repository<Income>
                 StatusMessage = "Failed Operation"
             };
         }
-    }
+    }*/
 }

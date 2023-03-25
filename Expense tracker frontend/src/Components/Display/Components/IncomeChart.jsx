@@ -1,61 +1,54 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const data = [
+const LoadingData = [
   {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    Month: 'January',
+    Amount: 9000
   },
   {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    Month: 'February',
+    Amount: 3000,
   },
   {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    Month: 'March',
+    Amount: 2000,
   },
   {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    Month: 'April',
+    Amount: 2780,
   },
   {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    Month: 'May',
+    Amount: 1890,
   },
   {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    Month: 'June',
+    Amount: 2390,
   },
   {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    Month: 'July',
+    Amount: 3490,
   },
 ];
 
-export default class Example extends PureComponent {
-//   static demoUrl = 'https://codesandbox.io/s/stacked-area-chart-ix341';
+function Chart(data) {
+  const [size, setSize] = useState(window.innerWidth)
+  
+  const sizeChecker = () => setSize(window.innerWidth)
 
-  render() {
+  useEffect(() => {
+    window.addEventListener('resize', sizeChecker) 
+    return ()=> window.removeEventListener('resize',sizeChecker)
+  })
+
+
     return (
-      <ResponsiveContainer width="80%" height="40%">
+      <ResponsiveContainer width={'100%'} height="40%">
         <AreaChart
           width={500}
           height={200}
-          data={data}
+          data={LoadingData}
           margin={{
             top: 10,
             right: 30,
@@ -63,15 +56,14 @@ export default class Example extends PureComponent {
             bottom: 0,
           }}
         >
-          {/* <CartesianGrid strokeDasharray="1 1" /> */}
-          <XAxis dataKey="name" />
+          <XAxis dataKey="Month" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="uv" stackId="1" stroke="#8114d8" fill="green" />
-          <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#ffffff05" />
-          <Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="yellow" />
+          <Area type="monotone" dataKey="Amount" stackId="1" stroke="#8114d8" fill="orange" />
         </AreaChart>
       </ResponsiveContainer>
     );
-  }
 }
+
+
+export default Chart;

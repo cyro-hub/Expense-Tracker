@@ -17,7 +17,7 @@ public class UserRepository : Repository<User>
         _mapper = mapper;
     }
 
-    public async Task<UserResponse> Register(UserRequestDTO request, RefreshToken refreshToken)
+   /* public async Task<UserResponse> Register(UserRequestDTO request, RefreshToken refreshToken)
     {
         try
         {
@@ -154,6 +154,15 @@ public class UserRepository : Repository<User>
             };
         }
     }
+    public async Task<decimal> GetBalance(Guid UserId)
+    {
+        var user = await _context.Set<User>().Where(user => user.Id == UserId).FirstOrDefaultAsync();
+        if(user is null)
+        {
+            return 0;   
+        }
+        return user.Balance;
+    }
     private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
     {
         try
@@ -277,5 +286,5 @@ public class UserRepository : Repository<User>
                 StatusMessage = "Failed Operation",
             };
         }
-    }
+    }*/
 }

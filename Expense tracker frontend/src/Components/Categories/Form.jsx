@@ -44,7 +44,8 @@ const style = {
 function Form({  }) {
   const [category, setCategory] = useState({
       name: '',
-      userId: useSelector(state => state.UserState.User?.userInfo.id)
+      userId: useSelector(state => state.UserState.User?.userInfo.id),
+      categoryType:"",
   })
   
   const [openForm,setOpenForm]=useState(false)
@@ -67,7 +68,7 @@ function Form({  }) {
         return
       }
     }
-
+// console.log(category)
     setIsLoading(true)
     postCategory(category, headers).then((data) => {
       if (data.isSuccess) {
@@ -120,6 +121,14 @@ function Form({  }) {
                   <input type="text" required autoComplete='off' value={category.name} name='name' onChange={handleInput}/>
                   <span>category</span>
               </motion.div>
+              <motion.div className="input" variants={item}>
+                  <select name="categoryType" onChange={handleInput}>
+                    <option value="">Select a Category Type</option>
+                    <option value="income">Income</option>
+                    <option value="outcome">Outcome</option>
+                  </select>
+                  <span>Category Type</span>
+                </motion.div>
               <motion.div className="controls" variants={item}>
                 <Link to='#' className='danger actives' onClick={!isLoading && handleSubmit}>
                   {isLoading ? <BeatLoader loading={true} size={8} color="green"/> : "Add"}
