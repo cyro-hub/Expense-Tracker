@@ -7,6 +7,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { getCurrencies, deleteIncome } from '../../Api/Incomes';
 import { useSelector } from 'react-redux';
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -108,13 +109,13 @@ function Delete({ data }) {
                   {success && <motion.p variants={item} className='success'>{success}</motion.p>}
               </motion.div>
               <motion.div className="input" variants={item}>
-                Confirm that you want to <strong className='danger'>delete</strong>
+                Confirm that you want to <strong className='danger'>delete</strong> Income
               </motion.div>
               <motion.div  variants={item}>
                 Created At: {createdAt}
               </motion.div>
               <motion.div  variants={item}>
-                Amount: {amount} {currency}
+                Amount: {getSymbolFromCurrency(currency)} {amount}
               </motion.div>
               <motion.div  variants={item}>
                 Category: {category.name}

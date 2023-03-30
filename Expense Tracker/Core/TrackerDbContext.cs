@@ -8,20 +8,12 @@ public class TrackerDbContext:DbContext
     {
     }
 
-  /*  protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TrackerDbContext).Assembly);
+    }
 
-        builder.Properties<DateOnly>()
-            .HaveConversion<DateOnlyConverter>()
-            .HaveColumnType("CreateAt");
-
-        base.ConfigureConventions(builder);
-
-    }*/
-
- /*   public DbSet<User> Users { get; set; }
-    public DbSet<Outcome> Outcomes { get; set; }
-    public DbSet<Income> Incomes { get; set; }*/
+    public DbSet<User> Users { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
-  /*  public DbSet<Category> Categories { get; set; }*/
+    public DbSet<Category> Categories { get; set; }
 }

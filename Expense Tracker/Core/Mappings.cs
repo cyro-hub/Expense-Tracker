@@ -8,10 +8,10 @@ public class Mappings:Profile
     {
         CreateMap<User,UserResponseDTO>();
         CreateMap<UserRequestDTO,User>();
-        CreateMap<Income, IncomeDTO>();
+        /*CreateMap<Income, IncomeDTO>();
         CreateMap<IncomeDTO, Income>();
         CreateMap<Outcome, OutcomeDTO>();
-        CreateMap<OutcomeDTO, Outcome>();
+        CreateMap<OutcomeDTO, Outcome>();*/
         CreateMap<Category, CategoryDTO>();
         CreateMap<CategoryDTO, Category>();
         CreateMap<Transaction, TransactionDTO>();

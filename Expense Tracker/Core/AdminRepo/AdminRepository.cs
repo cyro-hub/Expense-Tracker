@@ -1,4 +1,6 @@
-﻿namespace Expense_Tracker.Core.AdminRepo;
+﻿using Expense_Tracker.Models.UserModel;
+
+namespace Expense_Tracker.Core.AdminRepo;
 
 public class AdminRepository
 {
@@ -18,11 +20,21 @@ public class AdminRepository
         {
             var parameters = new DynamicParameters();
 
-            parameters.Add("@UserId",Id);
+           /* parameters.Add("@UserId",Id);
             parameters.Add("@StartDate", DateTime.Parse(from));
-            parameters.Add("@EndDate", DateTime.Parse(to));
+            parameters.Add("@EndDate", DateTime.Parse(to));*/
 
-            var result = await _DataAccess.LoadData<Report, DynamicParameters>("sp_transaction_to_income_comparison",parameters);
+            string Query = """
+                select sum(CASE WHEN type = 'Out' THEN Amount ELSE 0 END) as outcome,
+                       sum(CASE WHEN type = 'In' THEN Amount ELSE 0 END) as income,
+                	   Fullmonth 
+                from transactions 
+                where Userid=@UserId and 
+                CreatedAt >= @StartDate and CreatedAt <= @EndDate
+                group by Fullmonth;
+                """;
+
+            var result = await _DataAccess.LoadData<Report, dynamic>(Query,new {UserId=Id,StartDate=from,EndDate=to});
 
             return (new Responses<List<Report>>
             {
@@ -44,16 +56,32 @@ public class AdminRepository
             };
         }
     }
-    public async Task<Responses<List<Analysis>>> TransactionAnalysis(Guid Id, string From, string To)
+    public async Task<Responses<Analysis>> TransactionAnalysis(Guid Id, string from, string to)
     {
         try
         {
+            string Query = """
+                select max(CASE WHEN type = 'Out' THEN Amount END) as outmax,
+                       min(CASE WHEN type = 'Out' THEN Amount END) as outmin,
+                       avg(CASE WHEN type = 'Out' THEN Amount END) as outavg,
+                       max(CASE WHEN type = 'In' THEN Amount END) as inMax,
+                	   min(CASE WHEN type = 'In' THEN Amount END) as inMin,
+                	   avg(CASE WHEN type = 'In' THEN Amount END) as inavg,
+                       sum(CASE WHEN type = 'Out' THEN Amount END) as outtotal,
+                       sum(CASE WHEN type = 'In' THEN Amount END) as intotal
+                from Transactions
+                where Userid=@UserId and 
+                	  CreatedAt >= @StartDate and 
+                	  CreatedAt <= @EndDate
+                """;
 
-            return (new Responses<List<Analysis>>
+            var result = await _DataAccess.LoadData<Analysis, dynamic>(Query, new { UserId = Id, StartDate = from, EndDate = to });
+            
+            return (new Responses<Analysis>
             {
                 StatusCode = 200,
                 StatusMessage = "successful Operation",
-               /* Data = result1,*//*result1.Concat(result2).ToList(),*/
+                Data = result[0],
                 IsSuccess = true
             });
         }
@@ -61,7 +89,7 @@ public class AdminRepository
         {
             _logger.LogError(ex, "Error getting sp_transaction_analysis", typeof(AdminRepository));
 
-            return new Responses<List<Analysis>>()
+            return new Responses<Analysis>()
             {
                 StatusCode = 500,
                 IsSuccess = false,

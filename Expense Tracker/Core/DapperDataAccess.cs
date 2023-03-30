@@ -1,4 +1,6 @@
-﻿namespace Expense_Tracker.Core;
+﻿using Microsoft.Data.SqlClient;
+
+namespace Expense_Tracker.Core;
 
 public class DapperDataAccess
 {
@@ -9,21 +11,21 @@ public class DapperDataAccess
         _configuration = configuration;
     }
 
-    public async Task<List<T>> LoadData<T, U>(string StoredProcedure, U Parameters)
+    public async Task<List<T>> LoadData<T, U>(string Query, U Parameters)
     {
-        using (IDbConnection connection = new MySqlConnection(_configuration.GetSection("ConnectionStrings:Default").Value))
+        using (IDbConnection connection = new SqlConnection(_configuration.GetSection("ConnectionStrings:Default").Value))
         {
-            var rows = await connection.QueryAsync<T>(StoredProcedure,Parameters,commandType:CommandType.StoredProcedure);
+            var rows = await connection.QueryAsync<T>(Query,Parameters);
 
             return rows.ToList();
         }
     }
 
-    public async Task SaveData<T>(string StoredProcedure, T Parameters)
+    public async Task SaveData<T>(string Query, T Parameters)
     {
-        using (IDbConnection connection = new MySqlConnection(_configuration.GetSection("ConnectionStrings:Default").Value))
+        using (IDbConnection connection = new SqlConnection(_configuration.GetSection("ConnectionStrings:Default").Value))
         {
-            await connection.ExecuteAsync(StoredProcedure, Parameters, commandType: CommandType.StoredProcedure);
+            await connection.ExecuteAsync(Query, Parameters);
         }
     }
 }

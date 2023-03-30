@@ -2,38 +2,36 @@
 
 namespace Expense_Tracker.Core.OptionsRepo;
 
-public class CategoryRepository : Repository<Category>
+public class CategoryRepository
 {
     private readonly TrackerDbContext _context;
     private readonly ILogger _logger;
     private readonly IMapper _mapper;
 
     public CategoryRepository(TrackerDbContext context, ILogger logger,IMapper mapper)
-        : base(context, logger)
     {
         _context = context;
         _logger = logger;
         _mapper = mapper;
     }
-
-    /*public override async Task<Responses<List<Category>>> GetIncome(GetRequest request)
+    public async Task<Responses<List<Category>>> GetCategories(GetRequest request)
     {
         try
         {
             var result = await _context.Categories.Where(option => request.UserId == option.UserId).ToListAsync();
 
-                return (new Responses<List<Category>>
-                {
-                    StatusCode = 200,
-                    StatusMessage = "successful Operation",
-                    Data = result,
-                    IsSuccess = true
-                });
-          
+            return (new Responses<List<Category>>
+            {
+                StatusCode = 200,
+                StatusMessage = "successful Operation",
+                Data = result,
+                IsSuccess = true
+            });
+
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting Option records", typeof(Repository<Category>));
+            _logger.LogError(ex, "Error getting Option records", typeof(CategoryRepository));
 
             return new Responses<List<Category>>()
             {
@@ -43,7 +41,7 @@ public class CategoryRepository : Repository<Category>
             };
         }
     }
-    public async Task<Responses<Category>> Add(CategoryDTO request)
+    public async Task<Responses<Category>> AddCategory(CategoryDTO request)
     {
 
         try
@@ -63,6 +61,23 @@ public class CategoryRepository : Repository<Category>
             category = _mapper.Map<Category>(request);
 
             category.Id = Guid.NewGuid();
+            if(request.CategoryType == "income")
+            {
+                category.Type = Types.In;
+            }
+            else if (request.CategoryType == "outcome")
+            {
+                category.Type = Types.Out;
+            }
+            else
+            {
+                return (new Responses<Category>()
+                {
+                    StatusCode = 203,
+                    StatusMessage = "Could not add the category check the type",
+                    IsSuccess = false
+                });
+            }
 
             await _context.Set<Category>().AddAsync(category);
 
@@ -75,7 +90,7 @@ public class CategoryRepository : Repository<Category>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "{Repo} GetAll method error", typeof(Repository<Category>));
+            _logger.LogError(ex, "{Repo} GetAll method error", typeof(CategoryRepository));
             return new Responses<Category>()
             {
                 StatusCode = 500,
@@ -85,7 +100,7 @@ public class CategoryRepository : Repository<Category>
         }
 
     }
-    public async Task<Responses<Category>> Update(CategoryRequestDTO request)
+    public async Task<Responses<Category>> UpdateCategory(CategoryRequestDTO request)
     {
         try
         {
@@ -108,7 +123,7 @@ public class CategoryRepository : Repository<Category>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting Option records", typeof(Repository<Category>));
+            _logger.LogError(ex, "Error getting Option records", typeof(CategoryRepository));
 
             return new Responses<Category>()
             {
@@ -117,5 +132,32 @@ public class CategoryRepository : Repository<Category>
                 StatusMessage = "Failed Operation"
             };
         }
-    }*/
+    }
+    public async Task<Responses<Category>> GetCategoryById(Guid CategoryId,Guid UserId)
+    {
+        try
+        {
+            var result = await _context.Categories.Where(cat => cat.Id == CategoryId && cat.UserId == UserId).FirstOrDefaultAsync();
+
+            return (new Responses<Category>
+            {
+                StatusCode = 200,
+                StatusMessage = "successful Operation",
+                Data = result,
+                IsSuccess = true
+            });
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting Option records", typeof(CategoryRepository));
+
+            return new Responses<Category>()
+            {
+                StatusCode = 500,
+                IsSuccess = false,
+                StatusMessage = "Failed Operation"
+            };
+        }
+    }
 }

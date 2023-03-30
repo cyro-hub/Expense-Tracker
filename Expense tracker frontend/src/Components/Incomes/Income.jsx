@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from 'react-redux';
 import { getCurrencies } from '../../Api/Incomes';
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -45,7 +46,7 @@ function Income({data}) {
   const [amount,setAmount]=useState(0)
 
   const handleModalCloseOrOpen = () => setOpenForm(!openForm)
-  const { currency , category,createdAt } = data
+  const { currency, category, createdAt } = data
   
   useEffect(() => {
     getCurrencies(data.currency).then(d => {
@@ -55,11 +56,11 @@ function Income({data}) {
  
     return (<>
       <p onClick={handleModalCloseOrOpen} className='category-shorten'>{category.name}</p>
-      <h3 onClick={handleModalCloseOrOpen}>{amount} <strong>{currency}</strong></h3>
+      <h3 onClick={handleModalCloseOrOpen}><strong>{getSymbolFromCurrency(currency)}</strong> {amount}</h3>
         <p className="moment" onClick={handleModalCloseOrOpen}>{moment(createdAt).fromNow()}</p>
         <Modal
-        open={openForm}
-        onClose={handleModalCloseOrOpen}>
+          open={openForm}
+          onClose={handleModalCloseOrOpen}>
             <Box sx={style}>
             <div className='account-form'>
             <motion.form
@@ -70,13 +71,10 @@ function Income({data}) {
                 Created At : {createdAt}
               </motion.div>
               <motion.div  variants={item}>
-                Amount : {amount}
+                Amount : {getSymbolFromCurrency(currency) + amount}
               </motion.div>
               <motion.div  variants={item}>
-                Category : {category.name}
-              </motion.div>
-              <motion.div  variants={item}>
-                Currency : {currency}
+                Category : {category?.name}
               </motion.div>
               <motion.div className="controls" variants={item}>
                 <Link to='#' className='category-shorten'>

@@ -1,10 +1,9 @@
-﻿/*using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Expense_Tracker.Controllers;
-[Route("api/[controller]")]
 [ApiController]
 [Authorize]
 public class CategoryController : ControllerBase
@@ -16,39 +15,39 @@ public class CategoryController : ControllerBase
         _unitOfWork = unitOfWork;
     }
 
-   
-    [HttpGet]
-    public async Task<ActionResult> GetAll(Guid UserId)
+
+    [HttpGet("api/category")]
+    public async Task<ActionResult> Get(Guid UserId)
     {
-        
-        var result = await _unitOfWork.Categories.GetIncome(new GetRequest()
+
+        var result = await _unitOfWork.Categories.GetCategories(new GetRequest()
         {
             UserId = UserId
         });
 
         return Ok(result);
-        
+
         return BadRequest();
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult> Get(Guid id)
+    [HttpGet("api/category/{Id}")]
+    public async Task<ActionResult> GetById(Guid Id,Guid UserId)
     {
-        if (id != Guid.Empty)
+        if (Id != Guid.Empty)
         {
-            var result = await _unitOfWork.Categories.GetById(id);
+            var result = await _unitOfWork.Categories.GetCategoryById(Id,UserId);
 
             return Ok(result);
         }
         return BadRequest(string.Empty);
     }
 
-    [HttpPost]
+    [HttpPost("api/category")]
     public async Task<ActionResult> Post([FromBody] CategoryDTO request)
     {
         if (ModelState.IsValid)
         {
-            var result = await _unitOfWork.Categories.Add(request);
+            var result = await _unitOfWork.Categories.AddCategory(request);
 
             _unitOfWork.Complete();
 
@@ -59,12 +58,12 @@ public class CategoryController : ControllerBase
         return BadRequest(string.Empty);
     }
 
-    [HttpPut]
+    [HttpPut("api/category")]
     public async Task<ActionResult> Put([FromBody] CategoryRequestDTO request)
     {
         if (ModelState.IsValid)
         {
-            var result = await _unitOfWork.Categories.Update(request);
+            var result = await _unitOfWork.Categories.UpdateCategory(request);
 
             _unitOfWork.Complete();
 
@@ -73,4 +72,3 @@ public class CategoryController : ControllerBase
         return BadRequest("");
     }
 }
-*/

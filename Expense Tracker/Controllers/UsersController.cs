@@ -1,4 +1,4 @@
-﻿/*using Expense_Tracker.Core.Configuration;
+﻿using Expense_Tracker.Core.Configuration;
 using Expense_Tracker.Models;
 using Expense_Tracker.Models.UserModel;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Expense_Tracker.Controllers;
-[Route("api/[controller]")]
+[Route("api/user")]
 [ApiController]
 public class UsersController : ControllerBase
 {
@@ -29,12 +29,12 @@ public class UsersController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] UserRequestDTO request)
     {
-        if(ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            RefreshToken  refreshToken = GenerateRefreshToken();    
+            RefreshToken refreshToken = GenerateRefreshToken();
 
             var result = await _unitOfWork.Users.Register(request, refreshToken);
-            
+
             _unitOfWork.Complete();
 
             _unitOfWork.Dispose();
@@ -52,7 +52,7 @@ public class UsersController : ControllerBase
         if (ModelState.IsValid)
         {
             RefreshToken refreshToken = GenerateRefreshToken();
-         
+
             var result = await _unitOfWork.Users.Login(request, refreshToken);
 
             _unitOfWork.Complete();
@@ -85,7 +85,7 @@ public class UsersController : ControllerBase
         _unitOfWork.Complete();
 
         _unitOfWork.Dispose();
-        
+
         return Ok(result);
     }
 
@@ -115,4 +115,3 @@ public class UsersController : ControllerBase
         return refreshToken;
     }
 }
-*/

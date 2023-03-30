@@ -27,3 +27,11 @@ export const SetHeaders = (token) => {
         payload: headers
     })
 }
+
+export const setReports = (reports) => {
+    store.dispatch({type:action.reports,payload:reports})
+}
+
+export const setAnalysis = (analysis) => {
+    store.dispatch({type:action.analysis,payload:analysis})
+}

@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { getCurrencies ,postIncome} from '../../Api/Incomes';
 import moment from 'moment'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -155,7 +156,7 @@ function Form({ }) {
                 <select name="categoryId" onChange={handleInput}>
                   <option value="">select a category</option>
                     {
-                      categories?.filter(category=>category.categoryType == "income")?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
+                      categories?.filter(category=>category.type == 0)?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
                     }
                   </select>
                   <span>Category</span>
@@ -163,13 +164,14 @@ function Form({ }) {
                 <motion.div className="input" variants={item}>
                   <select name="currency" onChange={handleInput}>
                     <option value="">select a currency</option>
-                    {
-                      currencies?.map(currency => <option value={currency} key={currency}>{currency}</option>)
+                   {
+                    currencies?.filter(currency => getSymbolFromCurrency(currency))?.
+                                map(currency => <option value={currency} key={currency}>{getSymbolFromCurrency(currency)}</option>)
                     }
                   </select>
                   <span>Currency</span>
                 </motion.div>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Created At"
                     value={income.createdAt}
@@ -178,7 +180,7 @@ function Form({ }) {
                     className='date-picker'
                     renderInput={(params) => <TextField {...params} />}
                   />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
                 <motion.div className="controls" variants={item}>
                   <Link to='#' className='danger actives' onClick={!isLoading && handleSubmit}>
                     {isLoading ? <BeatLoader loading={true} size={8} color="green" /> : "Add"}

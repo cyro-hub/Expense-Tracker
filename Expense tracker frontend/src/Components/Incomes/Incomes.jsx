@@ -58,10 +58,12 @@ function Incomes({isOpen, isOpenFunction}) {
     let headers = useSelector(state => state.UserState.Headers);
 
     const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
+   
+    const categories = useSelector(state => state.CategoryState.Categories)
 
     const { data } = useSWR("incomes", ()=>getIncomes(currentPage, userId, headers), { refreshInterval: 4000 })
 
-    // console.log(data)
+    // console.log(categories)
     return (<>
         <Modal
         open={isOpen}
@@ -75,7 +77,7 @@ function Incomes({isOpen, isOpenFunction}) {
                   {
                     data?.data?.map(income => (
                       <div className="transaction" key={income.id}>
-                        <Income data={income} />
+                        <Income data={income}/>
                         <div className="actions">
                           <FormEdit data={income}/>
                           <Delete data={income}/>

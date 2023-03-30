@@ -7,11 +7,9 @@ public class Category
     public Guid Id { get; set; }
     [Required, MaxLength(300)]
     public string Name { get; set; }
-    [Required, MaxLength(15)]
-    public string CategoryType { get; set; }
-    [Required]
+    public Types Type { get; set; }
     [JsonIgnore]
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
     [JsonIgnore]
     public User User { get; set; }
 }

@@ -2,22 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Expense_Tracker.Core.UserRepo;
-public class UserRepository : Repository<User>
+public class UserRepository
 {
     private readonly TrackerDbContext _context;
     private readonly ILogger _logger;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
-    public UserRepository(TrackerDbContext context, ILogger logger, IConfiguration configuration, IMapper mapper) : base(context, logger)
+    public UserRepository(TrackerDbContext context, ILogger logger, IConfiguration configuration, IMapper mapper)
     {
         _context = context;
         _logger = logger;
         _configuration = configuration;
         _mapper = mapper;
     }
-
-   /* public async Task<UserResponse> Register(UserRequestDTO request, RefreshToken refreshToken)
+    public async Task<UserResponse> Register(UserRequestDTO request, RefreshToken refreshToken)
     {
         try
         {
@@ -58,8 +57,9 @@ public class UserRepository : Repository<User>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "hagad", typeof(Repository<User>));
-            return new UserResponse() {
+            _logger.LogError(ex, "Error registrying user", typeof(UserRepository));
+            return new UserResponse()
+            {
                 AccessToken = "",
                 IsSuccess = false,
                 StatusMessage = "Failed Operation",
@@ -110,7 +110,7 @@ public class UserRepository : Repository<User>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "{Repo} Login method error", typeof(Repository<User>));
+            _logger.LogError(ex, "{Repo} Login method error", typeof(UserRepository));
             return new UserResponse()
             {
                 AccessToken = "",
@@ -144,9 +144,9 @@ public class UserRepository : Repository<User>
                 IsSuccess = true,
             };
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            _logger.LogError(ex, "{Repo} refresh method error", typeof(Repository<RefreshToken>));
+            _logger.LogError(ex, "{Repo} refresh method error", typeof(RefreshToken));
             return new Responses<RefreshToken>()
             {
                 IsSuccess = false,
@@ -157,9 +157,9 @@ public class UserRepository : Repository<User>
     public async Task<decimal> GetBalance(Guid UserId)
     {
         var user = await _context.Set<User>().Where(user => user.Id == UserId).FirstOrDefaultAsync();
-        if(user is null)
+        if (user is null)
         {
-            return 0;   
+            return 0;
         }
         return user.Balance;
     }
@@ -175,7 +175,7 @@ public class UserRepository : Repository<User>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "{Repo} verifying user method error", typeof(Repository<User>));
+            _logger.LogError(ex, "{Repo} verifying user method error", typeof(UserRepository));
 
             return false;
         }
@@ -205,7 +205,7 @@ public class UserRepository : Repository<User>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "{Repo} User token creating method error", typeof(Repository<User>));
+            _logger.LogError(ex, "{Repo} User token creating method error", typeof(UserRepository));
 
             return "";
         }
@@ -216,13 +216,14 @@ public class UserRepository : Repository<User>
         {
             passwordSalt = hmac.Key;
             passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        } 
-    } 
+        }
+    }
     public async Task<UserResponse> CheckUserRefreshToken(string refreshToken)
     {
         try
         {
-            if (refreshToken == null || refreshToken == "") {
+            if (refreshToken == null || refreshToken == "")
+            {
                 return new UserResponse
                 {
                     StatusCode = 404,
@@ -232,7 +233,7 @@ public class UserRepository : Repository<User>
                 };
             }
 
-            User user = await context.Users.Where(user => user.RefreshToken == refreshToken).FirstOrDefaultAsync();
+            User user = await _context.Users.Where(user => user.RefreshToken == refreshToken).FirstOrDefaultAsync();
 
             if (user is null)
             {
@@ -276,9 +277,9 @@ public class UserRepository : Repository<User>
                 UserInfo = _mapper.Map<UserResponseDTO>(user)
             };
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            _logger.LogError(ex, "{Repo} refresh method error", typeof(Repository<User>));
+            _logger.LogError(ex, "{Repo} refresh method error", typeof(UserRepository));
             return new UserResponse()
             {
                 AccessToken = "",
@@ -286,5 +287,5 @@ public class UserRepository : Repository<User>
                 StatusMessage = "Failed Operation",
             };
         }
-    }*/
+    }
 }

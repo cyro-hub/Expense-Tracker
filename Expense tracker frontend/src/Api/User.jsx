@@ -2,7 +2,7 @@ import axios from "axios";
 import * as reduxFunctions from '../StateManager/Functions/User'
 
 export const BaseEndPoint = axios.create({
-    baseURL:'https://localhost:7152/api/Users'
+    baseURL:'https://localhost:7152/api/user'
 })
 
 const Register = 'register';

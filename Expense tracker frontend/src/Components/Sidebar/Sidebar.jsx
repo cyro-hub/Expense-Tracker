@@ -45,7 +45,7 @@ function Sidebar() {
     })
 
     return (
-    <>
+        <>
       <div className={`sidebar ${size < 500 &&'small'}`}>
           <div className="user-info">
               <FaRegUserCircle size={21}/>

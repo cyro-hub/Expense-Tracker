@@ -4,12 +4,15 @@ import Modal from '@mui/material/Modal';
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { motion } from "framer-motion";
+import BeatLoader from "react-spinners/BeatLoader";
 import moment from 'moment'
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import './filters.scss';
+import { report, analysis } from '../../Api/Transactions';
+import * as reducFunctions from '../../StateManager/Functions/User'
 
 const style = {
   position: 'absolute',
@@ -44,18 +47,57 @@ const container = {
 };
 
 function Settings({ isOpen, isOpenFunction }) {
-  const [filter, setFilter] = useState({ from: new Date(), to: new Date(),categoryId : '' })
+  const [filter, setFilter] = useState({ from: new Date((new Date()).setFullYear(new Date().getFullYear() - 1)), to: new Date() })
   const [isLoading, setIsLoading] = useState(false);
-  
-  const categories = useSelector(state => state.CategoryState.Categories)
- 
-  const handleInput =(e)=>setFilter({...filter,[e.target.name]:e.target.value})
+  const [warning, setWarning] = useState('')
+  const [success, setSuccess] = useState("");
+
+  let headers = useSelector(state => state.UserState.Headers);
+
+  const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
   
   const handleModalCloseOrOpen = () => isOpenFunction(!isOpen)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+
+    const newFilter = { from: moment(filter.from).format('YYYY-MM-DD'), to: moment(filter.to).format('YYYY-MM-DD') };
+
+    setIsLoading(true);
+
+    Promise.all([
+      analysis(userId,newFilter,headers),
+      report(userId,newFilter,headers),
+    ]).then(([reports, analyst]) => {
+        if (reports.isSuccess && analyst.isSuccess) {
+            reducFunctions.setAnalysis(analyst.data)
+            reducFunctions.setReports(reports.data)
+            setIsLoading(false)
+            setSuccess(reports.statusMessage)
+            setTimeout(() => {
+          }, 2000)
+          setIsLoading(false)
+        }
+        setIsLoading(false)
+      }).catch((err) => {
+          setWarning(err.message)
+          setIsLoading(false)
+      })
   }
+
+  useEffect(() => {
+    handleSubmit();
+  },[])
+
+
+   useEffect(() => {
+    const timer = setTimeout(() => {
+      setWarning('')
+      setSuccess('')
+    }, 4000)
+
+    return ()=>clearTimeout(timer)
+   })
+  
   return (
     <>
       <Modal
@@ -69,6 +111,10 @@ function Settings({ isOpen, isOpenFunction }) {
                 initial="hidden"
               animate="visible">
               <h2>Filters</h2>
+                <motion.div className="input" variants={item}>
+                  {warning && <motion.p variants={item} className='warning'>{warning}</motion.p>}
+                  {success && <motion.p variants={item} className='success'>{success}</motion.p>}
+                </motion.div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="From"
@@ -90,15 +136,6 @@ function Settings({ isOpen, isOpenFunction }) {
                     renderInput={(params) => <TextField {...params} />}
                   />
                   </LocalizationProvider>
-                <motion.div className="input" variants={item}>
-                <select name="categoryId" className='select-no-border' onChange={handleInput}>
-                  <option value="">select a category</option>
-                    {
-                      categories?.map((category) => (<option value={category.id} key={category.id}>{category.name}</option>))
-                    }
-                  </select>
-                  <span>Category</span>
-                </motion.div>
                 <motion.div className="controls" variants={item}>
                   <Link to='#' className='danger actives' onClick={!isLoading && handleSubmit}>
                     {isLoading ? <BeatLoader loading={true} size={8} color="green" /> : "Apply"}

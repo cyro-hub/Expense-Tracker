@@ -16,6 +16,16 @@ const reducer = (state = initial, action) => {
             return {
                 ...state,Headers:action.payload
             }
+        case actionTypes.analysis: {
+            return {
+                ...state,analysis:action.payload
+            }
+        }
+        case actionTypes.reports: {
+            return {
+                ...state,reports:action.payload
+            }
+        }
         default: return {
             ...state
         }

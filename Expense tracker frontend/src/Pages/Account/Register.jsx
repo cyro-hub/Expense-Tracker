@@ -9,6 +9,7 @@ import { registerUser } from '../../Api/User'
 import * as reduxFunctions from '../../StateManager/Functions/User'
 import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from 'react-redux'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -49,7 +50,6 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const handleInput = (e) => setUser({ ...User, [e.target.name]: e.target.value })
   
   const handleSubmit = async (e) => {
@@ -101,9 +101,6 @@ function Register() {
       setWarning('')
       setSuccess('')
     }, 4000)
-
-
-
     return ()=>clearTimeout(timer)
   })
 
@@ -130,8 +127,8 @@ function Register() {
               <motion.div className="input" variants={item}>
                   <select name="Currency" onChange={handleInput}>
                     <option value="">select a currency</option>
-                    {
-                      currencies?.map(currency => <option value={currency} key={currency}>{currency}</option>)
+              {
+                currencies?.filter(currency=>getSymbolFromCurrency(currency))?.map(currency =><option value={currency} key={currency}>{getSymbolFromCurrency(currency)}</option>)
                     }
                   </select>
                   <span>Currency</span>

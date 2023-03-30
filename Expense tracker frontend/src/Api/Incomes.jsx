@@ -4,7 +4,7 @@ export const BaseEndPoint = axios.create({
     baseURL:'https://localhost:7152/api/'
 })
 
-export const Incomes = "Incomes"
+export const Incomes = "income"
 
 export const getIncomes = async (currentPage, userId, headers) => {
     const url = Incomes + "?CurrentPage=" + currentPage + "&UserId=" + userId + "&QueryString=''";
@@ -22,7 +22,7 @@ export const getCurrencies = async (currency) => {
 }
 
 export const deleteIncome = async (id,headers) => {
-    const response = await BaseEndPoint.delete(Incomes + "/" + id, headers)
+    const response = await BaseEndPoint.delete(Incomes+"?id="+ id, headers)
     return response.data;
 }
 

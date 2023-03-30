@@ -20,7 +20,5 @@ public class User
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime? RefreshTokenCreatedAt { get; set; } = DateTime.Now;
     public DateTime? RefreshTokenExpiresAt { get; set; } = DateTime.Now;
-    public List<Income> Incomes { get; set; }
-    public List<Outcome> Outcomes { get; set; }
     public List<Category> Categories { get; set; }
 }
