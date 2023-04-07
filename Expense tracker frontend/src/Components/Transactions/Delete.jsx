@@ -5,8 +5,9 @@ import {Link, useNavigate} from 'react-router-dom'
 import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
-import { getCurrencies} from '../../Api/Incomes';
-import { deleteOutcome} from '../../Api/Transactions';
+import { getCurrencies} from '../../Api/api';
+import useAxios from '../../Hooks/useAxios';
+import { Outcomes as EndPoint } from '../../Api/endPoints'
 import { useSelector } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -46,14 +47,14 @@ function Delete({ data }) {
     const [openForm,setOpenForm]=useState(false)
     const [warning, setWarning] = useState('')
     const [success, setSuccess] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const axios = useAxios();
     
     const [amount, setAmount] = useState()
 
-    const { currency , category,createdAt,id } = data
-    
-    const headers = useSelector(state => state.UserState.Headers)
-
+  const { currency, category, createdAt, id } = data
+  
     const handleModalCloseOrOpen = () => setOpenForm(!openForm)
   
   const handleSubmit = async (e) => {
@@ -61,7 +62,7 @@ function Delete({ data }) {
     
     setIsLoading(true)
 
-    deleteOutcome(id, headers).then((data) => {
+    axios.delete(EndPoint+"?id="+ id).then(({data}) => {
      if (data.isSuccess) {
         setSuccess(data?.statusMessage);
        setIsLoading(false)

@@ -11,8 +11,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import './filters.scss';
-import { report, analysis } from '../../Api/Transactions';
-import * as reducFunctions from '../../StateManager/Functions/User'
+import useAxios from '../../Hooks/useAxios';
+import * as endpoints  from '../../Api/endPoints'
+import * as reduxFunctions from '../../StateManager/Functions/User'
 
 const style = {
   position: 'absolute',
@@ -52,9 +53,9 @@ function Settings({ isOpen, isOpenFunction }) {
   const [warning, setWarning] = useState('')
   const [success, setSuccess] = useState("");
 
-  let headers = useSelector(state => state.UserState.Headers);
-
   const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
+
+  const axios = useAxios();
   
   const handleModalCloseOrOpen = () => isOpenFunction(!isOpen)
 
@@ -62,17 +63,20 @@ function Settings({ isOpen, isOpenFunction }) {
 
     const newFilter = { from: moment(filter.from).format('YYYY-MM-DD'), to: moment(filter.to).format('YYYY-MM-DD') };
 
+    const reports = `${endpoints.Report}?Id=${userId}&from=${newFilter.from}&to=${newFilter.to}`
+    const analysis = `${endpoints.Analysis}?Id=${userId}&from=${newFilter.from}&to=${newFilter.to}`
+
     setIsLoading(true);
 
     Promise.all([
-      analysis(userId,newFilter,headers),
-      report(userId,newFilter,headers),
-    ]).then(([reports, analyst]) => {
-        if (reports.isSuccess && analyst.isSuccess) {
-            reducFunctions.setAnalysis(analyst.data)
-            reducFunctions.setReports(reports.data)
+      axios.get(reports),
+      axios.get(analysis),
+    ]).then(([{ data: reports }, { data: analysis }]) => {
+        if (reports?.isSuccess && analysis?.isSuccess) {
+            reduxFunctions.setAnalysis(analysis?.data)
+            reduxFunctions.setReports(reports?.data?.reverse())
             setIsLoading(false)
-            setSuccess(reports.statusMessage)
+            setSuccess(reports?.data?.statusMessage)
             setTimeout(() => {
           }, 2000)
           setIsLoading(false)
@@ -87,10 +91,10 @@ function Settings({ isOpen, isOpenFunction }) {
   useEffect(() => {
     handleSubmit();
   },[])
-
-
-   useEffect(() => {
+  
+  useEffect(() => {
     const timer = setTimeout(() => {
+      handleSubmit()
       setWarning('')
       setSuccess('')
     }, 4000)

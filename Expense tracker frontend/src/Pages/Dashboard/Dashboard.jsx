@@ -6,7 +6,8 @@ import './dashboard.scss';
 function Dashboard() {
   useEffect(() => {
     document.getElementById('root').style.overflow = "hidden"
-  },[])
+  }, [])
+  
   return (<div className='dashboard'>
     <Sidebar />
     <Display/>

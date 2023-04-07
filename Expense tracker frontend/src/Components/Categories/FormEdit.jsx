@@ -6,7 +6,8 @@ import {Link, useNavigate} from 'react-router-dom'
 import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
-import { editCategory } from '../../Api/Categories'
+import useAxios from '../../Hooks/useAxios';
+import { Category as EndPoint } from '../../Api/endPoints'
 import { useSelector } from 'react-redux';
 
 
@@ -43,59 +44,64 @@ const style = {
 };
 
 function Form({ data }) {
-
     const [category, setCategory] = useState({
-      Name: data.name,
-      UserId: data.userId,
-      Id: data.id,
-      categoryType:""
-    })
-    const [openForm,setOpenForm]=useState(false)
-    const [warning, setWarning] = useState('')
-    const [success, setSuccess] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+      name: data.name,
+      userId: data.userId,
+      categoryType:"",
+      id: data.id,
+  })
+  const [openForm,setOpenForm]=useState(false)
+  const [warning, setWarning] = useState('')
+  const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   
-    const headers = useSelector(state => state.UserState.Headers)
+  const axios = useAxios();
 
-    const handleInput = (e) => setCategory({ ...category, [e.target.name]: e.target.value })
+  const handleInput = (e) => setCategory({ ...category, [e.target.name]: e.target.value })
 
-    const handleModalCloseOrOpen = () => setOpenForm(!openForm)
+  const handleModalCloseOrOpen = () => setOpenForm(!openForm)
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      for (const key in category) {
-        if (category[key] === '' || category[key] === null) {
-          setWarning(`${key} is empty`)
-          return
-        }
+    for (const key in category) {
+      if (category[key] === '' || category[key] === null) {
+        setWarning(`${key} is empty`)
+        return
       }
-      
-      setIsLoading(true)
-      
-    editCategory(category, headers).then((data) => {
+    }
+
+    
+  setIsLoading(true)
+    axios.put(EndPoint, category).then(({ data }) => {
+    if (data.isSuccess) {
+      setSuccess(data.statusMessage);
       setIsLoading(false)
-      setSuccess(data.statusMessage)
-      setCategory({...category,Name:''})
+      setCategory({...category,name:''})
       
       setTimeout(() => {
         handleModalCloseOrOpen()
-      }, 1000)
+      }, 2000)
       
-    }).catch ((error)=>{
+    } else {
+      setWarning(data.statusMessage);
       setIsLoading(false)
-      setWarning(error.message)
-    })
-  }
-        
-    useEffect(() => {
-        const timer = setTimeout(() => {
-          setWarning('')
-          setSuccess('')
-        }, 4000)
+    }
+  }).catch(error => {
+    setWarning(error.message)
+    setIsLoading(false)
+    setCategory({...category,name:''})
+  })
+}
+      
+  useEffect(() => {
+      const timer = setTimeout(() => {
+        setWarning('')
+        setSuccess('')
+      }, 4000)
 
-        return ()=>clearTimeout(timer)
-      })
+      return ()=>clearTimeout(timer)
+    })
 
     return (<>
         <AiFillEdit  size={22} onClick={handleModalCloseOrOpen}/>
@@ -114,7 +120,7 @@ function Form({ data }) {
                   {success && <motion.p variants={item} className='success'>{success}</motion.p>}
               </motion.div>
               <motion.div className="input" variants={item}>
-                  <input type="text" required autoComplete='off' value={category.Name} name='Name' onChange={handleInput}/>
+                  <input type="text" required autoComplete='off' value={category.name} name='name' onChange={handleInput}/>
                   <span>Category</span>
               </motion.div>
               <motion.div className="input" variants={item}>

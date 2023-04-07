@@ -8,8 +8,9 @@ import Category from './Category';
 import FormEdit from './FormEdit'
 import Delete from './Delete'
 import { useSelector } from 'react-redux';
-import { getCategories } from '../../Api/Categories'
-import * as reduxFunction from '../../StateManager/Functions/Category'
+import useAxios from '../../Hooks/useAxios';
+import { Category as EndPoint } from '../../Api/endPoints'
+import * as reduxFunctions from '../../StateManager/Functions/Category'
 import './form.scss'
 import useSWR from 'swr'
 
@@ -30,11 +31,17 @@ const style = {
 
 function Categories({ isOpen, isOpenFunction }) {
 
-  let headers = useSelector(state => state.UserState.Headers);
+  const axios = useAxios();
+
+  const getCategories = async (id) => {
+    const response = await axios.get(EndPoint + "?UserId=" + id)
+    reduxFunctions.SetCategories(response?.data?.data);
+    return response.data
+  }
 
   let id = useSelector(state => state.UserState.User?.userInfo?.id)
 
-  const { data } = useSWR("categories", () => getCategories(id, headers), { refreshInterval: 4000 })
+  const { data } = useSWR("categories", () => getCategories(id), { refreshInterval: 4000 })
   
   return (
     <>
@@ -53,12 +60,12 @@ function Categories({ isOpen, isOpenFunction }) {
                         <Category data={category} />
                         <div className="actions">
                           <FormEdit data={category} />
-                          <Delete data={category} />
+                          {/* <Delete data={category}'}} /> */}
                         </div>
                       </div>
                     ))
                   }
-                </> : (new Array(6).fill('')).map((income, i) => <div className='loading' key={i}></div>)
+                </> : (new Array(3).fill('')).map((income, i) => <div className='loading' key={i}></div>)
             }          
             </div>
             <Form/>

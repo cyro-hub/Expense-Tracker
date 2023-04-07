@@ -6,11 +6,12 @@
     width: 90vw;
     overflow: hidden;
     margin:0 auto;
+    gap: 0.5em;
 
     .sidebar{
         flex: .1;
     }
     .display{
-        flex: .9 !important;
+        // flex: .9 !important;
     }
 }

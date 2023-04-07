@@ -16,7 +16,7 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpGet("api/income")]
-    public async Task<ActionResult> GetIncome(int CurrentPage, Guid UserId, string QueryString)
+    public async Task<ActionResult> GetIncome(int CurrentPage, Guid UserId, string? QueryString)
     {
         var result = await _unitOfWork.Transactions.GetTransactions(new GetRequest()
                                         {
@@ -28,7 +28,7 @@ public class TransactionsController : ControllerBase
         return Ok(result);
     }
     [HttpGet("api/outcome")]
-    public async Task<ActionResult> GetOutcome(int CurrentPage, Guid UserId, string QueryString)
+    public async Task<ActionResult> GetOutcome(int CurrentPage, Guid UserId, string? QueryString)
     {
         var result = await _unitOfWork.Transactions.GetTransactions(new GetRequest()
         {

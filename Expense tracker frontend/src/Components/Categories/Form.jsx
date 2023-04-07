@@ -2,12 +2,12 @@ import React,{useState,useEffect} from 'react'
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './form.scss'
-import {Link, useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from 'react-redux';
-import { Options, BaseEndPoint as cacheKey } from '../../Api/Categories'
-import { postCategory } from '../../Api/Categories'
+import useAxios from '../../Hooks/useAxios';
+import { Category as EndPoint } from '../../Api/endPoints'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -45,7 +45,7 @@ function Form({  }) {
   const [category, setCategory] = useState({
       name: '',
       userId: useSelector(state => state.UserState.User?.userInfo.id),
-      categoryType:"",
+      categoryType:"income",
   })
   
   const [openForm,setOpenForm]=useState(false)
@@ -53,7 +53,7 @@ function Form({  }) {
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const headers = useSelector(state => state.UserState.Headers)
+  const axios = useAxios();
 
   const handleInput = (e) => setCategory({ ...category, [e.target.name]: e.target.value })
 
@@ -68,11 +68,10 @@ function Form({  }) {
         return
       }
     }
-// console.log(category)
+
     setIsLoading(true)
-    postCategory(category, headers).then((data) => {
+    axios.post(EndPoint, category).then(({data}) => {
       if (data.isSuccess) {
-          
         setSuccess(data.statusMessage);
         setIsLoading(false)
         setCategory({...category,name:''})
@@ -90,7 +89,7 @@ function Form({  }) {
       setIsLoading(false)
       setCategory({...category,name:''})
     })
-  }
+}
     
  useEffect(() => {
     const timer = setTimeout(() => {
@@ -123,7 +122,6 @@ function Form({  }) {
               </motion.div>
               <motion.div className="input" variants={item}>
                   <select name="categoryType" onChange={handleInput}>
-                    <option value="">Select a Category Type</option>
                     <option value="income">Income</option>
                     <option value="outcome">Outcome</option>
                   </select>

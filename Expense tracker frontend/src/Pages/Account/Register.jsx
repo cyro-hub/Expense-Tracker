@@ -4,12 +4,14 @@ import './form.scss'
 import {Link, useNavigate} from 'react-router-dom'
 import Nav from '../../Components/Nav/Nav'
 import { motion } from "framer-motion";
-import useSWR from 'swr';
-import { registerUser } from '../../Api/User'
+import { axiosPrivate } from '../../Api/api'
+import {User as endPoint} from '../../Api/endPoints'
 import * as reduxFunctions from '../../StateManager/Functions/User'
 import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from 'react-redux'
 import getSymbolFromCurrency from 'currency-symbol-map'
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -33,7 +35,6 @@ const item = {
 
 var passwordPattern = new RegExp('^[0-9A-Za-z]{8,}$')
 var emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-
 function Register() {
   
   const currencies = useSelector(state => state.UserState.Currencies)
@@ -74,7 +75,7 @@ function Register() {
          
     setIsLoading(true)
     
-      registerUser(User).then(data => {  
+      axiosPrivate.post(`${endPoint}/register`,User).then(({data}) => {  
         if (data?.isSuccess) {
           setSuccess(data?.statusMessage);
           setIsLoading(false)
@@ -82,7 +83,7 @@ function Register() {
           reduxFunctions.SetUser(data);
           
           setTimeout(() => {
-            navigate('/')
+            navigate('/panel')
           }, 2000)
         } else {          
           setWarning(data?.statusMessage)
@@ -94,7 +95,6 @@ function Register() {
       }
     )
   }
-  
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -132,6 +132,7 @@ function Register() {
                     }
                   </select>
                   <span>Currency</span>
+
               </motion.div>
               <motion.div className="input" variants={item}>
                   <input type="password" required autoComplete='off' value={User.Password} name='Password' onChange={handleInput}/>

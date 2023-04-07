@@ -66,6 +66,12 @@ body{
   margin-inline: 5px;
 }
 
+.alerts{
+  position: absolute;
+  right: 0;
+  z-index: 100;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

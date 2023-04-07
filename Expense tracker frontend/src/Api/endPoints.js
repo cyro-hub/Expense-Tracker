@@ -1,0 +1,6 @@
+export const Category = "category"
+export const Incomes = "income"
+export const Outcomes = "outcome"
+export const Report = "report"
+export const Analysis = "analysis"
+export const User = "user"

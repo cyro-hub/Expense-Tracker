@@ -1,5 +1,6 @@
 ﻿using Expense_Tracker.Models.UserModel;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Expense_Tracker.Core.UserRepo;
 public class UserRepository
@@ -134,6 +135,16 @@ public class UserRepository
             }
 
             var user = _context.Set<User>().Where(user => user.RefreshToken == refreshToken).FirstOrDefault<User>();
+
+            if(user is null)
+            {
+                return new Responses<RefreshToken>()
+                {
+                    StatusCode = 203,
+                    StatusMessage = "Unauthorised user",
+                    IsSuccess = false,
+                };
+            }
 
             user.RefreshToken = "";
 

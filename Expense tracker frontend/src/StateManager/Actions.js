@@ -8,3 +8,5 @@ export const SetCurrencies = 'SetCurrencies'
 export const analysis = 'analysis'
 
 export const reports = 'reports'
+
+export const setUserBalance = "setUserBalance";

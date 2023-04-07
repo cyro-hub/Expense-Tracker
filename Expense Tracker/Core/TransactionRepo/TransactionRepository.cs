@@ -106,22 +106,29 @@ public class TransactionRepository
             {
                 var Type = Types.In;
 
-                var NumberOfPages = Math.Ceiling(_context.Set<Transaction>()
+                var NumberOfPages = Math.Ceiling(_context.Set<Transaction>().Include("Category")
                                                      .Where(income => request.UserId == income.UserId &&
-                                                                      income.Type.Equals(Type))
+                                                                      income.Type.Equals(Type) && 
+                                                                      (string.IsNullOrEmpty(request.QueryString) ||
+                                                                      income.Category.Name.Contains(request.QueryString)) ||
+                                                                      income.FullMonth.Contains(request.QueryString))
                                                      .Count() / pageSize);
 
-                var Result = await _context.Set<Transaction>().Where(income => request.UserId == income.UserId &&
-                                                                               income.Type.Equals(Type))
+                var Result = await _context.Set<Transaction>()
+                                            .Include("Category")
+                                            .Where(income => request.UserId == income.UserId &&
+                                                                      income.Type.Equals(Type) &&
+                                                                      (string.IsNullOrEmpty(request.QueryString) ||
+                                                                      income.Category.Name.Contains(request.QueryString)) ||
+                                                                      income.FullMonth.Contains(request.QueryString))
                                             .Skip((request.CurrentPage - 1) * (int)pageSize)
                                             .Take((int)pageSize)
-                                            .Include("Category")
                                             .ToListAsync();
                 return (new Responses<List<Transaction>>
                 {
                     CurrentPage = request.CurrentPage,
                     StatusCode = 200,
-                    StatusMessage = "successful Operation",
+                    StatusMessage = request.QueryString,
                     Data = Result,
                     NumberOfPages = (int)NumberOfPages,
                     IsSuccess = true
@@ -132,21 +139,29 @@ public class TransactionRepository
                 var Type = Types.Out;
 
                 var NumberOfPages = Math.Ceiling(_context.Set<Transaction>()
+                                                     .Include("Category")
                                                      .Where(income => request.UserId == income.UserId &&
-                                                                      income.Type.Equals(Type))
+                                                                      income.Type.Equals(Type) &&
+                                                                      (string.IsNullOrEmpty(request.QueryString) ||
+                                                                      income.Category.Name.Contains(request.QueryString)) ||
+                                                                      income.FullMonth.Contains(request.QueryString))
                                                      .Count() / pageSize);
 
-                var Result = await _context.Set<Transaction>().Where(income => request.UserId == income.UserId &&
-                                                                               income.Type.Equals(Type))
+                var Result = await _context.Set<Transaction>()
+                                            .Include("Category")
+                                            .Where(income => request.UserId == income.UserId &&
+                                                                      income.Type.Equals(Type) &&
+                                                                      (string.IsNullOrEmpty(request.QueryString) ||
+                                                                      income.Category.Name.Contains(request.QueryString)) ||
+                                                                      income.FullMonth.Contains(request.QueryString))
                                             .Skip((request.CurrentPage - 1) * (int)pageSize)
                                             .Take((int)pageSize)
-                                            .Include("Category")
                                             .ToListAsync();
                 return (new Responses<List<Transaction>>
                 {
                     CurrentPage = request.CurrentPage,
                     StatusCode = 200,
-                    StatusMessage = "successful Operation",
+                    StatusMessage = request.QueryString,
                     Data = Result,
                     NumberOfPages = (int)NumberOfPages,
                     IsSuccess = true

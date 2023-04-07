@@ -4,9 +4,7 @@ import Modal from '@mui/material/Modal';
 import moment from 'moment'
 import {Link, useNavigate} from 'react-router-dom'
 import { motion } from "framer-motion";
-import BeatLoader from "react-spinners/BeatLoader";
-import { useSelector } from 'react-redux';
-import { getCurrencies } from '../../Api/Incomes';
+import { getCurrencies } from '../../Api/api';
 import getSymbolFromCurrency from 'currency-symbol-map'
 
 const container = {
@@ -41,22 +39,22 @@ const style = {
   p: 1.5,
 };
 
-function Income({data}) {
+function Income({ currency, category, createdAt ,amount}) {
   const [openForm, setOpenForm] = useState(false)
-  const [amount,setAmount]=useState(0)
+  const [convertedAmount,setConvertedAmount]=useState(0)
 
   const handleModalCloseOrOpen = () => setOpenForm(!openForm)
-  const { currency, category, createdAt } = data
-  
+
   useEffect(() => {
-    getCurrencies(data.currency).then(d => {
-      setAmount(Math.round(data.amount / d['usd']))
+    getCurrencies(currency).then(d => {
+      console.log(amount)
+      setConvertedAmount(Math.round(amount / d['usd']))
     })
   },[])
  
     return (<>
       <p onClick={handleModalCloseOrOpen} className='category-shorten'>{category.name}</p>
-      <h3 onClick={handleModalCloseOrOpen}><strong>{getSymbolFromCurrency(currency)}</strong> {amount}</h3>
+      <h3 onClick={handleModalCloseOrOpen}><strong>{getSymbolFromCurrency(currency)}</strong> {convertedAmount}</h3>
         <p className="moment" onClick={handleModalCloseOrOpen}>{moment(createdAt).fromNow()}</p>
         <Modal
           open={openForm}
@@ -71,7 +69,7 @@ function Income({data}) {
                 Created At : {createdAt}
               </motion.div>
               <motion.div  variants={item}>
-                Amount : {getSymbolFromCurrency(currency) + amount}
+                Amount : {getSymbolFromCurrency(currency) + convertedAmount}
               </motion.div>
               <motion.div  variants={item}>
                 Category : {category?.name}

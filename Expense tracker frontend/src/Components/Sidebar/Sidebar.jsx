@@ -11,30 +11,49 @@ import Incomes from '../Incomes/Incomes'
 import { useSelector } from 'react-redux'
 import Transactions from '../Transactions/Transactions'
 import * as reduxFunctions from '../../StateManager/Functions/User'
-import { userLogout } from '../../Api/User'
+import { User as endPoint } from '../../Api/endPoints'
+import useAxios from '../../Hooks/useAxios'
 import Filters from '../Filters/Filters'
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import BeatLoader from "react-spinners/BeatLoader";
+
 
 function Sidebar() {
     const [openCategories, setOpenCategories] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
+    const [appState,setAppState] = useState('')
+    const [message,setMessage] = useState('')
     const [openIncomes, setOpenIncomes] = useState(false);
     const [openFilters, setOpenFilters]= useState(false)
     const [openTransactions, setOpenTransactions] = useState(false);
     const [size, setSize] = useState(window.innerWidth);
-
+    const axios = useAxios();
     const {name,email,currency} = useSelector(state => state?.UserState?.User?.userInfo)
 
     const CheckSize = () => setSize(window.innerWidth)
-  
-    const navigate = useNavigate();
 
-    const logout = () => {        
-        userLogout().then(data => {
-            if (data?.isSuccess) {
-                reduxFunctions.SetUser({});
-                reduxFunctions.SetHeaders({});
+    const logout = () => {  
+        setIsLoading(true)
+        axios.post(endPoint, {}).then(({ data }) => {
+            const {result} = data
+            if (result?.isSuccess) {
+                setAppState("success");
+                setMessage(result?.statusMessage)
+                setIsLoading(false)
+                setTimeout(() => {
+                    reduxFunctions.SetUser({});
+                    reduxFunctions.SetHeaders({});
+                },2000)
+            } else if (!result?.isSuccess) {
+                setAppState("warning");
+                setMessage(result?.statusMessage)
+                setIsLoading(false)
             }
         }).catch(error => {
-            console.log(error.message)
+            setAppState("error");
+            setMessage(error.message)
+            setIsLoading(false)
         })
     }
     
@@ -42,6 +61,15 @@ function Sidebar() {
         window.addEventListener('resize', CheckSize)
        
         return ()=>window.removeEventListener('resize',CheckSize)
+    })
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setAppState('')
+            setMessage('')
+        }, 4000)
+        
+        return ()=>clearTimeout(timer)
     })
 
     return (
@@ -74,16 +102,25 @@ function Sidebar() {
           </Link>
           <Link to='/settings' className='home'><AiTwotoneSetting size={15} />
               {size > 500 && <p>Settings</p>}
-          </Link>
-          <Link to='#' onClick={logout} className='home'><AiOutlineLogout size={15} />
-              {size > 500 && <p>Logout</p>}
-          </Link>
+                </Link>
+                {
+                    isLoading?<BeatLoader loading={true} size={8} color="green" />:<Link to='#' onClick={logout} className='home'><AiOutlineLogout size={15} />
+                    {size > 500 && <p>Logout</p>}
+                        </Link>
+                }
+          
             </div>
             <Categories isOpen={openCategories}
                 isOpenFunction={setOpenCategories} />
             <Incomes isOpen={openIncomes} isOpenFunction={setOpenIncomes} />
             <Transactions isOpen={openTransactions} isOpenFunction={setOpenTransactions} />
-            <Filters isOpen={openFilters} isOpenFunction={setOpenFilters}/>
+            <Filters isOpen={openFilters} isOpenFunction={setOpenFilters} />
+            {appState && <div className="alerts">
+                <Alert variant="filled" severity={appState}>
+                    <AlertTitle>{appState}</AlertTitle>
+                    {message} — <strong>check it out!</strong>
+                </Alert>
+            </div>}
     </>
   )
 }

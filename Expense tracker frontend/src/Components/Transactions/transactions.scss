@@ -4,10 +4,10 @@
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    max-height:400px;
+    max-height:200px;
     padding: 1em auto;
-    max-height: 22em;
     width: 100%;
+    transition: 0.25s ease-in-out;
 
     .transaction{
         display: flex;

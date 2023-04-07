@@ -17,9 +17,8 @@
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
-        max-height:400px;
+        max-height:250px !important;
         padding: 1em auto;
-        max-height: 22em;
         width: 100%;
 
         .category{
@@ -52,12 +51,12 @@
                 svg:first-child:hover{
                     color: $accent-color-secondary;
                 }
-                svg:last-child{
-                    color: rgb(255, 38, 0);
-                }
-                svg:last-child:hover{
-                    color: rgba(255, 38, 0, 0.5);
-                }
+                // svg:last-child{
+                //     color: rgb(255, 38, 0);
+                // }
+                // svg:last-child:hover{
+                //     color: rgba(255, 38, 0, 0.5);
+                // }
             }
         }
     }

@@ -8,7 +8,6 @@ public class Category
     [Required, MaxLength(300)]
     public string Name { get; set; }
     public Types Type { get; set; }
-    [JsonIgnore]
     public Guid? UserId { get; set; }
     [JsonIgnore]
     public User User { get; set; }

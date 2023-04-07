@@ -10,9 +10,10 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { getCurrencies } from '../../Api/Incomes';
-import { editOutcome } from '../../Api/Transactions';
-import mement from 'moment'
+import { getCurrencies } from '../../Api/api';
+import useAxios from '../../Hooks/useAxios';
+import { Outcomes as EndPoint } from '../../Api/endPoints'
+import moment from 'moment'
 import getSymbolFromCurrency from 'currency-symbol-map'
 
 
@@ -56,7 +57,7 @@ function Form({ data }) {
 
   const { id, amount, createdAt } = data
   
-  const [outcome, setOutcome] = useState({
+  const [transaction, setTransaction] = useState({
     id:id,
     amount: amount,
     rawAmount: '',
@@ -71,12 +72,12 @@ function Form({ data }) {
     const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
   
-    const headers = useSelector(state => state.UserState.Headers)
+  const axios = useAxios();
 
-  const handleInput = (e) => setOutcome({ ...outcome, [e.target.name]: e.target.value })
+  const handleInput = (e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })
   
   const handleChange = (date) => {
-    setOutcome({...outcome,createdAt:moment(date.$d).format('YYYY-MM-DD')})
+    setTransaction({...transaction,createdAt:moment(date.$d).format('YYYY-MM-DD')})
   }
 
     const handleModalCloseOrOpen = () => setOpenForm(!openForm)
@@ -84,8 +85,8 @@ function Form({ data }) {
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      for (const key in outcome) {
-        if (outcome[key] === '' || outcome[key] === null) {
+      for (const key in transaction) {
+        if (transaction[key] === '' || transaction[key] === null) {
           if (key === "categoryId") {
             return setWarning("Select a Category")
           }
@@ -102,12 +103,12 @@ function Form({ data }) {
       
       setIsLoading(true)
       
-      editOutcome(outcome, headers).then((data) => {
+      axios.put(EndPoint,transaction).then(({data}) => {
       if (data.isSuccess) {
           
         setSuccess(data.statusMessage);
         setIsLoading(false)
-        setOutcome({...outcome,rawAmount:''})
+        setTransaction({...transaction,rawAmount:''})
         
         setTimeout(() => {
           handleModalCloseOrOpen()
@@ -132,17 +133,17 @@ function Form({ data }) {
   
     useEffect(() => {
       getCurrencies('usd').then(d => {
-      setOutcome({ ...outcome, rawAmount: Math.round(data.amount * d[data?.currency]) })
+      setTransaction({ ...transaction, rawAmount: Math.round(data.amount * d[data?.currency]) })
     })
     }, [openForm])
   
     useEffect(() => {
-      if (outcome?.currency !== '') {      
-        getCurrencies(outcome?.currency).then(data => {
-          setOutcome({...outcome,amount:data.usd * outcome.rawAmount})
+      if (transaction?.currency !== '') {      
+        getCurrencies(transaction?.currency).then(data => {
+          setTransaction({...transaction,amount:data.usd * transaction.rawAmount})
         })
       }
-    },[outcome.currency])
+    },[transaction.currency])
   
     return (<>
         <AiFillEdit  size={20} onClick={handleModalCloseOrOpen}/>
@@ -161,7 +162,7 @@ function Form({ data }) {
                   {success && <motion.p variants={item} className='success'>{success}</motion.p>}
               </motion.div>
               <motion.div className="input" variants={item}>
-                <input type="number" required autoComplete='off' name="rawAmount" value={outcome.rawAmount} onChange={handleInput}/>
+                <input type="number" required autoComplete='off' name="rawAmount" value={transaction.rawAmount} onChange={handleInput}/>
                   <span>Amount</span>
               </motion.div>
               <motion.div className="input" variants={item}>

@@ -32,10 +32,20 @@ const LoadingData = [
   },
 ];
 
-function Chart(analysis) {
+function Chart({analysis}) {
+  const [size, setSize] = useState(window.innerWidth);
+
+  const sizeChecker = () => setSize(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener('resize', sizeChecker)
+
+    return ()=> window.removeEventListener('resize',sizeChecker) 
+  })
+
     return (
-      <ResponsiveContainer width={'100%'} height="95%">
-        <AreaChart data={analysis.analysis}>
+      <ResponsiveContainer aspect={size>1000?3:1.5} width={'100%'} height={'125%'}>
+        <AreaChart data={analysis?analysis:LoadingData }>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#8884e8" stopOpacity={0.8}/>

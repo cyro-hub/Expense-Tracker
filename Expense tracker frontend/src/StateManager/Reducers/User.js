@@ -26,6 +26,11 @@ const reducer = (state = initial, action) => {
                 ...state,reports:action.payload
             }
         }
+        case actionTypes.setUserBalance: {
+            return{
+                ...state,balance : action.payload
+            }
+        }
         default: return {
             ...state
         }

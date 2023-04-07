@@ -104,19 +104,29 @@ public class CategoryRepository
     {
         try
         {
-            var result = await _context.Categories.Where(opt => opt.Id == request.Id && opt.UserId == request.UserId).FirstOrDefaultAsync();
+            var category = await _context.Categories.Where(opt => opt.Id == request.Id && opt.UserId == request.UserId).FirstOrDefaultAsync();
 
-            result.Name = request.Name;
+            if(category is null)
+            {
+                return (new Responses<Category>
+                {
+                    StatusCode = 203,
+                    StatusMessage = "Category not found",
+                    IsSuccess = false
+                });
+            }
+            
+            category.Name = request.Name;
 
             await _context.SaveChangesAsync();
 
-            result = await _context.Categories.Where(opt => opt.Id == request.Id && opt.UserId == request.UserId).FirstOrDefaultAsync();
+            category = await _context.Categories.Where(opt => opt.Id == request.Id && opt.UserId == request.UserId).FirstOrDefaultAsync();
 
             return (new Responses<Category>
             {
                 StatusCode = 200,
                 StatusMessage = "successful Operation",
-                Data = result,
+                Data = category,
                 IsSuccess = true
             });
 

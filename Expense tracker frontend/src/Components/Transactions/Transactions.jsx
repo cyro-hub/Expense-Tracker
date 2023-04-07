@@ -3,17 +3,21 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import '../Categories/form.scss'
 import './transactions.scss';
-import {Link, useNavigate} from 'react-router-dom'
-import { motion } from "framer-motion";
-import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from 'react-redux';
-import { getOutcome } from '../../Api/Transactions'
-import { AiFillDelete,AiFillEdit } from 'react-icons/ai';
+import { motion } from "framer-motion";
+import useAxios from '../../Hooks/useAxios';
+import { FaSearch } from 'react-icons/fa';
+import { Outcomes as EndPoint } from '../../Api/endPoints'
 import FormEdit from './FormEdit'
 import Delete from './Delete'
 import Form from './Form'
 import useSWR from 'swr';
 import Transaction from './Transaction';
+import {CustomizedPagination} from '../../Styles/Styles'
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
+
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -41,51 +45,78 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  maxHeight: "70vh",
-  backdropFilter: "blur(6px)",
-  bgcolor: '#ffffff05',
-  borderRadius: 1,
   border: 'none',
   outline: 'none',
+  overflow:'scroll',
   p: 1.5,
 };
 
 function Transactions({isOpen, isOpenFunction}) {
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [transactions,setTransactions]=useState([])
+  const [getRequest, setGetRequest] = useState({
+    queryString: '',
+    currentPage: 1,
+    userId: useSelector(state => state?.UserState?.User?.userInfo?.id)
+  })
+  
+  const axios = useAxios();
 
-    const [currentPage, setCurrentPage] = useState(1)
-    
-    let headers = useSelector(state => state.UserState.Headers);
+  const getOutcome = async ({currentPage, userId,queryString}) => {
+    const url = `${EndPoint}?CurrentPage=${currentPage}&UserId=${userId}&QueryString=${queryString}`;
+    const response = await axios.get(url)
+    return response.data;
+  }
 
-    const userId = useSelector(state => state?.UserState?.User?.userInfo?.id)
+  const { data } = useSWR(`Transactions${getRequest.currentPage,getRequest.queryString}`, ()=>getOutcome(getRequest), { refreshInterval: 4000 })
 
-    const { data } = useSWR("Transactions", ()=>getOutcome(currentPage, userId, headers), { refreshInterval: 4000 })
-
+  useEffect(() => {
+      setTransactions(data?.data)
+  }, [data])
+  
     return (<>
         <Modal
         open={isOpen}
         onClose={()=>isOpenFunction(!isOpen)}>
         <Box sx={style}>
-         <div className='account-form'>
-            <h2>Transactions</h2>
-            <div className="Transactions-list">
-              {
-                (typeof(data) !== "undefined" && data?.data?.length > 0 && data?.data !== null) ? <>
-                  {
-                    data?.data?.map(income => (
-                      <div className="transaction" key={income.id}>
-                        <Transaction data={income} />
-                        <div className="actions">
-                          <FormEdit data={income}/>
-                          <Delete data={income}/>
-                        </div>
-                      </div>
-                    ))
+          <div className='account-form'>
+            <motion.form
+                variants={container}
+                initial="hidden"
+              animate="visible">    
+              <motion.div className="input" variants={item}>
+                <input type="text" autoComplete='off' 
+                  value={getRequest.queryString}
+                  onChange={(e) => setGetRequest({ ...getRequest, queryString: e.target.value ,currentPage:1})} />
+                {getRequest.queryString === "" && <span><FaSearch size={12} /> Outcome transactions</span>}
+                </motion.div>
+              {(typeof(transactions) !== "undefined" && transactions?.length > 0 && transactions !== null) ? 
+                  <motion.div className="input" variants={item}>
+                    <div className="Transactions-list">                                  
+                        {
+                          transactions?.map(outcome => (
+                            <div className="transaction" key={outcome.id}>
+                              <Transaction data={outcome} />
+                                <div className="actions">
+                                  <FormEdit data={outcome}/>
+                                  <Delete data={outcome}/>
+                                </div>
+                              </div>
+                            ))
+                          }
+                      </div>         
+                  </motion.div>:
+                <motion.div className="input" variants={item}>
+                 <Stack spacing={1} height={100}>{(new Array(3).fill('')).map((income, i) =>
+                    <Skeleton variant="rounded" width={'100%'} sx={{marginBottom:20}} key={i} />)}
+                  </Stack>
+                </motion.div>
                   }
-                </> : (new Array(6).fill('')).map((income, i) => <div className='loading' key={i}></div>)
-            }              
-            </div>
-            <Form/>
+                {(data?.data && data?.numberOfPages>1) &&<CustomizedPagination onChange={(e,v)=>setGetRequest({...getRequest,currentPage:v})} page={data.currentPage} count={data.numberOfPages} variant="outlined" shape="rounded"/>}
+              <motion.div className="input" variants={item}>
+                <Form/>
+              </motion.div>
+              </motion.form>
             </div>
         </Box>
     </Modal>

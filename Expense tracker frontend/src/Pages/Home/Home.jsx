@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import Nav from "../../Components/Nav/Nav"
 import "./home.scss"
 import welcome from '../../assets/welcome/welcome.mp4'
@@ -8,8 +7,6 @@ import { IoMdAnalytics} from 'react-icons/io'
 import { CgRecord} from 'react-icons/cg'
 import Footer from "../../Components/Footer/Footer"
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux"
-import * as reduxFunctions from '../../StateManager/Functions/User'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -32,12 +29,6 @@ const item = {
 };
 
 function Home() {
-  const token = useSelector(state => state.UserState.User?.accessToken)
-
-  useEffect(() => {
-    reduxFunctions.SetHeaders(token)
-  }, []);
-  
   return (
       <>
           <Nav />
@@ -54,7 +45,7 @@ function Home() {
           </div>
           <div className="container-services">
               <h2>Services</h2>
-        <motion.div className="services"
+                <motion.div className="services"
                 variants={container}
                 initial="hidden"
                 animate="visible">                  

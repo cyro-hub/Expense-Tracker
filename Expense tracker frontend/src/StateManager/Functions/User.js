@@ -35,3 +35,7 @@ export const setReports = (reports) => {
 export const setAnalysis = (analysis) => {
     store.dispatch({type:action.analysis,payload:analysis})
 }
+
+export const setUserBalance = (amount) => {
+    store.dispatch({type:action.setUserBalance,payload:amount})
+}

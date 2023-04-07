@@ -1,0 +1,26 @@
+@import '../../Styles//var.scss';
+
+.about{
+    padding: .5em;
+    color: $secondary-text;
+
+    h3{
+        width: 100%;
+        color: $primary-text;
+        margin: 1em auto;
+        font-size: 1.75em;
+    }
+    p{
+        margin: 1em auto;
+        font-size: 1.3em;
+    }
+
+    ul{
+        padding-inline:2em ;
+        li{
+            font-size: 1.2em;
+            list-style-type: disc;
+            padding: 0.5em auto;
+        }
+    }
+}

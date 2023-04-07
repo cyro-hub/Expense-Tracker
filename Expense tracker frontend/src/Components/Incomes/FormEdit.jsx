@@ -5,13 +5,14 @@ import {Link, useNavigate} from 'react-router-dom'
 import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
-import { editIncome } from '../../Api/Incomes'
+import useAxios from '../../Hooks/useAxios';
+import { Incomes as EndPoint } from '../../Api/endPoints'
 import { useSelector } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { getCurrencies } from '../../Api/Incomes';
+import { getCurrencies } from '../../Api/api';
 import moment from 'moment';
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -48,13 +49,13 @@ const style = {
   p: 1.5,
 };
 
-function Form({ data }) {
+function Form({ id,amount,createdAt,currency }) {
 
   const categories = useSelector(state => state.CategoryState.Categories)
   
   const currencies = useSelector(state => state.UserState.Currencies)
 
-  const { id,amount,createdAt } = data
+  const axios = useAxios();
   
   const [income, setIncome] = useState({
     id:id,
@@ -70,8 +71,6 @@ function Form({ data }) {
     const [warning, setWarning] = useState('')
     const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-  
-    const headers = useSelector(state => state.UserState.Headers)
 
   const handleInput = (e) => setIncome({ ...income, [e.target.name]: e.target.value })
   
@@ -101,7 +100,7 @@ function Form({ data }) {
       
       setIsLoading(true)
       
-      editIncome(income, headers).then((data) => {
+      axios.put(EndPoint,income).then(({data}) => {
       if (data.isSuccess) {
           
         setSuccess(data.statusMessage);
@@ -132,7 +131,7 @@ function Form({ data }) {
   
     useEffect(() => {
       getCurrencies('usd').then(d => {
-      setIncome({ ...income, rawAmount: Math.round(data.amount * d[data?.currency]) })
+      setIncome({ ...income, rawAmount: Math.round(amount * d[currency]) })
     })
     }, [openForm])
   

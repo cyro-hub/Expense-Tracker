@@ -6,7 +6,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import { motion } from "framer-motion";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from 'react-redux';
-import { getCurrencies } from '../../Api/Incomes';
+import { getCurrencies } from '../../Api/api';
 import getSymbolFromCurrency from 'currency-symbol-map'
 
 const container = {

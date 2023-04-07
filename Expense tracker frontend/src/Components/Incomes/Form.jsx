@@ -9,9 +9,11 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { getCurrencies ,postIncome} from '../../Api/Incomes';
+import { getCurrencies} from '../../Api/api';
 import moment from 'moment'
 import getSymbolFromCurrency from 'currency-symbol-map'
+import useAxios from '../../Hooks/useAxios';
+import { Incomes as EndPoint } from '../../Api/endPoints'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -48,6 +50,7 @@ const style = {
 const numberRegex = "[+]?([0-9]*[.])?[0-9]+"
 
 function Form({ }) {
+  const axios = useAxios();
 
   const categories = useSelector(state => state.CategoryState.Categories)
   const currencies = useSelector(state => state.UserState.Currencies)
@@ -65,8 +68,6 @@ function Form({ }) {
   const [warning, setWarning] = useState('')
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const headers = useSelector(state => state.UserState.Headers)
 
   const handleInput = (e) => {
     setIncome({ ...income, [e.target.name]: e.target.value })
@@ -96,9 +97,8 @@ function Form({ }) {
       }
     }
     setIsLoading(true)
-    postIncome(income, headers).then((data) => {
+    axios.post(EndPoint,income).then(({data}) => {
       if (data.isSuccess) {
-          
         setSuccess(data.statusMessage);
         setIsLoading(false)
         setIncome({...income,rawAmount:'',amount:''})
@@ -112,7 +112,6 @@ function Form({ }) {
       setWarning(error.message)
       setIsLoading(false)
     })
-  // console.log(income)
   }
   
   useEffect(() => {

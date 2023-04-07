@@ -1,13 +1,55 @@
 @import '../../Styles/var.scss';
 
+form{
+    // all: unset;
+    // width: 100%;
+    .input{
+        position: relative;
+        width: 90%;
+        margin-top: -.25em !important;
+        input{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-bottom: 0.25px solid $tertiary-text;
+            background-color: transparent;
+            outline: none;
+            color: $primary-text;
+            font-size: 1em;
+            margin: .7em 0;
+        }
+        input:valid ~ span, 
+        input:focus ~ span{
+            top: -1em;
+            font-size: 1em;
+            padding-inline: 0.6em;
+            color: $accent-color-secondary;
+        }
+        span{
+            transition: 0.5s ease-in-out;
+            position: absolute;
+            left: 0.2em;
+            top: .4em;
+            padding: 10px;
+            pointer-events: none;
+            font-size: 1em;
+            color: $tertiary-text;
+            svg{
+                margin-right: 0.125em;
+                margin-bottom: -2px;
+            }
+        }
+    }
+}
 .Transactions-list{
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    max-height:400px;
+    max-height:200px;
     padding: 1em auto;
     max-height: 22em;
     width: 100%;
+    transition: 0.25s ease-in-out;
 
     .transaction{
         display: flex;

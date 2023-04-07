@@ -9,8 +9,9 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { getCurrencies} from '../../Api/Incomes';
-import { postOutcome } from '../../Api/Transactions';
+import { getCurrencies} from '../../Api/api';
+import useAxios from '../../Hooks/useAxios';
+import { Outcomes as EndPoint } from '../../Api/endPoints'
 import moment from 'moment'
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -61,6 +62,8 @@ function Form({ }) {
     currency: '',
     userId: useSelector(state => state.UserState.User?.userInfo.id)
   })
+
+  const axios = useAxios()
   
   const [openForm,setOpenForm]=useState(false)
   const [warning, setWarning] = useState('')
@@ -97,7 +100,7 @@ function Form({ }) {
       }
     }
     setIsLoading(true)
-    postOutcome(transaction, headers).then((data) => {
+    axios.post(EndPoint,transaction).then(({data}) => {
       if (data.isSuccess) {
           
         setSuccess(data.statusMessage);

@@ -1,0 +1,90 @@
+@import '../../Styles//var.scss';
+
+.input{
+    color: $secondary-text;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: .5em auto;
+    ul{
+        margin-inline: -2em;
+        background-color: $primary-background;
+        border-radius: 10px;
+        padding: 1.75em;
+        max-height: 300px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin:0 auto;        
+        
+    }
+    .home{
+        text-decoration: none;
+        color: $accent-color;
+        display: flex;
+        font-size:1.1em;
+        gap: 0.4em;
+        align-items: center;
+        font-weight: lighter;
+        padding-inline:5px ;
+        p{
+            max-width: 138px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        svg{
+            margin-bottom: 4px;
+        }
+    }
+    .home:hover{
+            color: $accent-color-secondary;
+    }
+
+}
+.profile{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 1em;
+    a{
+        text-decoration: none;
+        color: $secondary-text;
+        width: max-content;
+    }
+    a:last-child{
+        color: $primary-text;
+        text-shadow: .5px 2px 2px black;
+        // border: 0.05px solid $tertiary-text;
+        background-color: $accent-color;
+        border-radius: 5px;
+        padding-inline: 15px;
+        transition: 0.5s ease-in-out;
+    }
+    a:last-child:hover{
+        transition: 0.5s ease-in-out;
+        border: none;
+        background-color: $accent-color-secondary;
+    }
+}
+
+.profile-to-be-edited{
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+.slider{
+    color: $secondary-text;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1em;
+    width: 100%;
+}

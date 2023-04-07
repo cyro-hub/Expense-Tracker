@@ -8,6 +8,8 @@
     color: $secondary-text; 
     transition: 1s ease-in-out;
     position: relative;
+    display: flex;
+    flex-direction: column;
     
     .display-card{
         display: flex;
@@ -15,7 +17,6 @@
         flex-wrap: wrap;
         padding-bottom:1em;
         gap: 1em;
-        position: sticky;
         
         .card{
             display: flex;
@@ -39,28 +40,20 @@
                 margin: .7em 0;
                 letter-spacing: 1.2px;
             }
+            h3{
+                font-size: 1em;
+            }
         }
-    }
-
-    .chart{
-        display: flex;
-        flex-direction: row;
-        border-radius: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-        background: #ffffff05;
-        padding: .5em !important;
-        align-items: center;
-        width: 100%;
-        height:45%;
-        margin-bottom: 0.5em;
-    }
+    }      
     .details{
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        height: 40%;
         gap: 0.5em;
         .reports{
+            height: 300px;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
@@ -69,8 +62,16 @@
             justify-content: center;
             background: #ffffff05;
             padding: .5em !important;
-            height: 100%;
             align-items: center;
+
+            h3{
+                text-align: center;
+                max-width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding-bottom: .5em !important;
+            }
         }
         .reports:first-child{
             color: #7159fd80;
@@ -79,21 +80,43 @@
             color:#46fc6e80;
         }
     }
-}
-
-@media screen and (max-width: 700px) {
-    .display-card{
-        flex-direction: column;
-        .card{
-            flex: 1;
-            width: 100%;
+    ul{
+        margin-top: 0.5em;
+        border-radius: 10px;
+        background: #ffffff05;
+        padding: 0.5em 2em;
+        li{
+            list-style-position: inside;
+        }
+        h3{
+            font-size: 1.5em;
+        }
+        .warning{
+            color: $warning;
+        }
+        .success{
+            color: $accent-color;
+        }
+        li{
+            font-size: 1.1em;
         }
     }
-    .chart{
-        width: 100vw;
-    }
-    .details{
-        flex-direction: column;
-        height: 80%;
+}
+
+
+@media screen and (max-width: 700px) {
+    .display{
+        .display-card{
+            flex-direction: column;
+            .card{
+                flex: 1;
+                width: 100%;
+            }
+        }
+        .details{
+            .reports{
+                flex: 1;
+            }
+        }
     }
 }

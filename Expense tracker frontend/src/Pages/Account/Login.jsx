@@ -4,9 +4,10 @@ import './form.scss'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import Nav from '../../Components/Nav/Nav'
 import { motion } from "framer-motion";
-import { loginUser } from '../../Api/User'
 import * as reduxFunctions from '../../StateManager/Functions/User'
 import BeatLoader from "react-spinners/BeatLoader";
+import { axiosPrivate } from '../../Api/api'
+import {User as endPoint} from '../../Api/endPoints'
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -59,7 +60,7 @@ function Login() {
 
     setIsLoading(true)
 
-    loginUser(User).then(data => {
+    axiosPrivate.post(`${endPoint}/login`,User).then(({data}) => {
       if (data?.isSuccess) {
         setSuccess(data?.statusMessage);
         setIsLoading(false)
@@ -67,7 +68,7 @@ function Login() {
         reduxFunctions.SetUser(data);
         
         setTimeout(() => {
-          navigate('/')
+          navigate('/panel')
         }, 2000)
       } else{        
         setIsLoading(false)

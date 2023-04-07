@@ -108,7 +108,7 @@ public class UsersController : ControllerBase
         var refreshToken = new RefreshToken
         {
             Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-            Expires = DateTime.Now.AddHours(1),
+            Expires = DateTime.Now.AddHours(3),
             Created = DateTime.Now
         };
 
